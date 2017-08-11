@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Contribute</title>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
+	<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+	<link rel='shortcut icon' type = 'image/ico' href="{{url_for('static', filename='favicon.ico')}}" >
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs-3.3.7/jq-2.2.4/dt-1.10.15/b-1.3.1/b-colvis-1.3.1/r-2.1.1/datatables.min.css"/>
+<body id="home">
+
+
+<div class="topnav" id="myTopnav">
+    <a id= "home-page-link" href="/bionetbay"><img id="favicon" src="{{url_for('static', filename='favicon.ico')}}"></img>   BioNetBay</a>
+    <a id= "page-link" href="/bionetbay/kinases">Kinase-Substrate Networks</a>
+    <a id= "page-link" href="/bionetbay/proteins">Protein-Protein Networks</a>
+    <a id= "page-link" href="/bionetbay/tf">TF-Target Networks</a>
+    <a id= "page-link" href="/bionetbay/gene">Genes</a>
+    <a id= "page-link" href="/bionetbay/contribute">Contribute</a>
+    <a id= "page-link" href="/bionetbay/help">Help</a>
+    <a id= "page-link" href="/bionetbay/about">About</a>
+  </div>
+
+<div align="center">
+    <br>
+    <h2>Guidelines for Successful Upload</h2>
+
+</div>
+
+<div>
+    <p>
+        
+        <br>To ensure a successful upload, please make sure ALL submissions comply with the following guidelines. 
+
+
+        <br> Files with a large number of rows may not upload. Files less than 1 MB should all upload properly, but files larger may currently cause the server to time out. We are working to expand the accepted file sizes largely.
+
+<br>Form submissions deviating from these guidelines will likely fail to be uploaded when processed:
+<br>Processing script URLs cannot contain the percent symbol (%)
+<br>If the processing script comes from Jupyter notebook, the best way to avoid this error is to rename the Jupyter Notebook file without any spaces – Spaces can be replaced with dashes or underscores instead
+
+<br>
+<br>
+<br>
+
+<br>Files deviating from these guidelines will likely fail to be uploaded when processed:
+<br>All files must be tab-separated
+<br>No files can contain NA values – the submission will fail
+<br>Files must NOT include a header (i.e. no column names)
+<br>Files cannot have duplicate submission titles. If you receive an error regarding duplicate submission titles, please return to the ‘Contribute’ page and change your submission title 
+
+<br>
+<br>
+<br>
+
+<br>GMT Files should follow the following format for successful submission:
+<br>Standard GMT format
+<br>Column 1: Kinase/Protein/Transcription Factor of Interest
+<br>Naming of the FIRST term
+<br>No terms can be over 225 characters long
+<br>terms with multiple words as part of the name should NOT be separated by underscore or dash → If multiple words are part of the name, separate by spaces or by periods (.)
+<br>Next to the term, place an underscore (_) and write the species name of the term
+<br>if multiple words are part of the term name, please make sure this underscore with species is the LAST part written
+<br>Column 2: Description
+<br>No spaces in this column (must be a single word)
+<br>Can be left empty (although an additional tab would still be necessary between the gene set name and its terms), but for reliable performance use ‘None’ if no description
+<br>Columns 3→ 
+<br>All interaction proteins, each in their own column (variable number of columns per kinase/protein/transcription factor)
+<br>These terms are only the gene symbol (no indication of species needed as with the first term)
+<br>No terms can be over 225 characters long
+<br>Example GMT File
+<br>An example of a GMT file whose format is accepted and can be successfully submitted is found on the ‘HELP’ page of BioNetBay
+
+<br>
+<br>
+<br>
+
+<br>SIG Files should follow the following format for successful submission:
+<br>Standard SIG format
+<br>All SIG files MUST have 13 columns corresponding to:
+<br>source name
+<br>source human accession
+<br>source mouse accession
+<br>source type
+<br>source location
+<br>target name
+<br>target human accession
+<br>target mouse accession
+<br>target type
+<br>target location
+<br>effect
+<br>type of interaction
+<br>PubMed IDs
+
+<br>
+<br>
+<br>
+
+<br>Bolded columns (columns 1 and columns 6) MUST include source name and the target name
+<br>All other columns can simply be listed as NA
+<br>None of the names can be over 225 characters long
+<br>Example SIG file
+<br>An example of a SIG file whose format is accepted and can be successfully submitted is found on the ‘HELP’ page of BioNetBay
+
+    </p>
+
+
+</div>
+
+
+	<div id="scripts">
+
+    <!-- standard js -->
+		<script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n" crossorigin="anonymous"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
+	</div>
+</body>
+</html>
