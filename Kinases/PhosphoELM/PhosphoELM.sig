@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 PAK2_Mus musculus	nan	nan	nan	nan	Mknk1	nan	nan	nan	nan	?	Phosphorylation	15234964
 Lck_Homo sapiens	nan	nan	nan	nan	SOCS3	nan	nan	nan	nan	?	Phosphorylation	12783885,15173187
 PKB_group_Homo sapiens	nan	nan	nan	nan	TERT	nan	nan	nan	nan	?	Phosphorylation	10224060
