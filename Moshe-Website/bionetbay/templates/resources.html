@@ -1,0 +1,8 @@
+{% extends "base.html" %}
+{% block content %}
+  <h1>This is the Resources page!</h1>
+  <h3> Sample: </h3>
+{% for resource in resources %}
+ <p><a href='/resourcepage/{{ resource }}'>{{ resource }}</a></b></p>
+{% endfor %}
+{% endblock %}
