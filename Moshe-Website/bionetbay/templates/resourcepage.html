@@ -1,17 +1,25 @@
 {% extends "base.html" %}
 {% block content %}
 <div align = "center" >
-  <h1>This is the {{ resource }} Resource page!</h1>
+  <h1>This is the {{ resource.name }} Resource page!</h1>
   <div>
-    <p>Name: {{ resource }} stuff</p>
-    <p>Description: {{ resource }} stuff</p>
-    <p>Measurement: {{ resource }} stuff</p>
-    <p>Category: {{ resource }} stuff</p>
-    <p>Linc to resource wesite: {{ resource }} stuff</p>
-    <p>Stats: {{ resource }} stuff</p>
-    <p>Scripts: {{ resource }} stuff</p>
-    <p>Processed Files: {{ resource }} stuff</p>
-    <p>Awsomely Cool Visualization(s): {{ resource }}</p>
+    <p><strong>Name:</strong> {{ resource.name }} stuff</p>
+    <p><strong>Description:</strong> {{ resource.description }} stuff</p>
+    <p><strong>Measurement:</strong> {{ resource.name }} stuff</p>
+    <p><strong>Category:</strong> {{ resource.name }} stuff</p>
+    <p><strong>Link to resource wesite:</strong> {{ resource.name }} stuff</p>
+    <p><strong>Stats:</strong> {{ resource.name }} stuff</p>
+    <p><strong>Scripts:</strong> {{ resource.name }} stuff</p>
+    <!-- <td><a href="{{ url_for('static', filename='processedFiles/hu.MAP/hu.map_gene_set_2017_07.gmt') }}">filename</a></td> -->
+    <hr>
+    <p><strong>Processed Files:</strong></p>
+    <ul>
+        {% for file in files %}
+        <li><a href='/downloadfile/?filename={{ file }}&directory={{ directory }}'>{{ file }}</a></li>
+        {% endfor %}
+    </ul>
+    <hr>
+    <p><strong>Awesomely Cool Visualization(s):</strong> {{ resource.name }}</p>
   </div>
 </div>
 {% endblock %}

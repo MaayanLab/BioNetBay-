@@ -1,13 +1,15 @@
 {% extends "base.html" %}
 {% block content %}
 <div align = "center" >
-  <h1>This is the {{ gene }} Gene page!</h1>
+  <h1>This is the {{ gene.symbol }} Gene page!</h1>
   <div>
-    <p>Name: {{ gene }} stuff</p>
-    <p>Description: {{ gene }} stuff</p>
-    <p>Synonyms: {{ gene }} stuff</p>
-    <p>Functional Associations: {{ gene }} stuff</p>
-    <p>Awsomely Cool Visualization(s): {{ gene }}</p>
+    <p><strong>Symbol:</strong> {{ gene.symbol }}</p>
+    <p><strong>Gene ID:</strong> {{ gene.gene_id }}</p>
+    <p><strong>Name:</strong> {{ gene.name }}</p>
+    <p><strong>Description:</strong> {{ gene.symbol }} stuff</p>
+    <p><strong>Synonyms:</strong> {{ gene.symbol }} stuff</p>
+    <p><strong>Functional Associations:</strong> {{ gene.symbol }} stuff</p>
+    <p><strong>Awesomely Cool Visualization(s):</strong> {{ gene.symbol }}</p>
   </div>
 </div>
 {% endblock %}
