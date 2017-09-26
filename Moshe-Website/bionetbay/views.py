@@ -1,5 +1,6 @@
-from flask import render_template, request, redirect
-from bionetbay import app
+from flask import render_template, request, redirect, send_from_directory
+import os
+from bionetbay import app, db, models
 
 
 @app.route('/')
@@ -9,8 +10,13 @@ def index():
 
 @app.route('/resources/')
 def resources():
-    resources = ['GTEx', 'hu.MAP']
+    resources = models.DataSet.query.order_by(models.DataSet.name).all()
     return render_template('resources.html', title="Resources", resources=resources)
+
+@app.route('/genes/')
+def genes():
+    genes = models.Gene.query.order_by(models.Gene.name).all()
+    return render_template('genes.html', title="Genes", genes=genes)
 
 @app.route('/about/')
 def about():
@@ -21,10 +27,27 @@ def search():
     app.vars['gene'] = request.form['gene']
     return redirect('/genepage/'+app.vars['gene'])
 
-@app.route('/genepage/<variable>' , methods=['GET'])
+@app.route('/genepage/<variable>')
 def genapage(variable):
-    return render_template('genepage.html', title=variable, gene=variable)
+    gene = models.Gene.query.filter_by(symbol=variable).first()
+    if gene != None:
+        return render_template('genepage.html', title=gene.symbol, gene=gene)
+    else:
+        return render_template('genenotfound.html', title='Not Found', gene=gene)
 
 @app.route('/resourcepage/<variable>')
 def resourcepage(variable):
-    return render_template('resourcepage.html', title=variable, resource=variable)
+    resource = models.DataSet.query.filter_by(name=variable).first()
+    directory = 'bionetbay/static/processedFiles/'+resource.name+'/'
+    files = os.listdir(directory)
+    return render_template('resourcepage.html', title=resource.name, resource=resource, files=files, directory=directory)
+
+@app.route("/downloadfile/")
+def downloadfile():
+    filename = request.args.get('filename')
+    directory = request.args.get('directory')
+    directory = directory[10:-1]
+    try:
+        return send_from_directory(directory=directory, filename=filename, as_attachment=True)
+    except Exception as e:
+        return str(e)
