@@ -4,10 +4,19 @@
   <h1>This is the {{ gene.symbol }} Gene page!</h1>
   <div>
     <p><strong>Symbol:</strong> {{ gene.symbol }}</p>
-    <p><strong>Gene ID:</strong> {{ gene.gene_id }}</p>
     <p><strong>Name:</strong> {{ gene.name }}</p>
-    <p><strong>Description:</strong> {{ gene.symbol }} stuff</p>
-    <p><strong>Synonyms:</strong> {{ gene.symbol }} stuff</p>
+    <p><strong>Old Symbol(s):</strong> {{ gene.old_symbol }}</p>
+    <p><strong>Old Name(s):</strong> {{ gene.old_name }}</p>
+    <p><strong>Synonym(s):</strong> {{ gene.synonyms }}</p>
+    <p><strong>Name Synonym(s):</strong> {{ gene.name_synonyms }}</p>
+    <p><strong>Chromosome:</strong> {{ gene.chromosome }}</p>
+    <p><strong>Accession Number(s):</strong> {{ gene.accession_numbers }}</p>
+    <p><strong>Entrez Gene ID:</strong> {{ gene.entrez_gene_id }}</p>
+    <p><strong>Ensembl Gene ID:</strong> {{ gene.ensembl_gene_id }}</p>
+    <p><strong>Pubmed ID(s):</strong> {{ gene.pubmed_ids}}</p>
+    <p><strong>RefSeq ID(s):</strong> {{ gene.refseq_ids}}</p>
+    <p><strong>Uniprot ID:</strong> {{ gene.uniprot_id}}</p>
+
     <p><strong>Functional Associations:</strong> {{ gene.symbol }} stuff</p>
     <p><strong>Awesomely Cool Visualization(s):</strong> {{ gene.symbol }}</p>
   </div>

@@ -5,8 +5,54 @@
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs-3.3.7/jq-2.2.4/dt-1.10.15/b-1.3.1/b-colvis-1.3.1/r-2.1.1/datatables.min.css"/>
     <link href="//netdna.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.6.3/css/bootstrap-select.min.css" />
+    <link rel="stylesheet" type="text/css" href="/media/css/site-examples.css?_=758e23b3f1a4c34d6c055f5cc10bae7e">
+	   <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script type="text/javascript" class="init"></script>
+    <script type="text/javascript" src="/media/js/dynamic.php?comments-page=examples%2Fbasic_init%2Fzero_configuration.html" async>
+</script>
+<script type="text/javascript" language="javascript" src="https://code.jquery.com/jquery-1.12.4.js">
+</script>
+<script type="text/javascript" language="javascript" src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js">
+</script>
+<style>
+.loader {
+    border: 16px solid #f3f3f3; /* Light grey */
+    border-top: 16px solid #3498db; /* Blue */
+    border-radius: 50%;
+    width: 120px;
+    height: 120px;
+    position: absolute;
+    margin: -150px 0 0 -150px;
+    left: 50%;
+    top: 50%;
+    animation: spin 2s linear infinite;
+}
 
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+</style>
+<script>
+
+    $(document).ready(function() {
+    	$('#example').DataTable();
+    } );
+
+
+    	</script>
+<script>
+$(window).load(function() {
+    yes();
+});
+
+function yes() {
+    $('#loading').hide();
+    $('#cover').show();
+};
+
+</script>
     {% if title %}
     <title>{{ title }} - BioNetBay</title>
     {% else %}
@@ -21,6 +67,10 @@
       <a href="/about">About</a>
     </div>
       <hr>
-      {% block content %}{% endblock %}
+      <div id="loading" align = "center" ><div class="loader"></div></div>
+        <div id="cover" style="display:none;">
+            {% block content %}{% endblock %}
+        </div>
+      </div>
   </body>
 </html>

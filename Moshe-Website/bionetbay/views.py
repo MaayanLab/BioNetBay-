@@ -1,5 +1,6 @@
 from flask import render_template, request, redirect, send_from_directory
 import os
+import time
 from bionetbay import app, db, models
 
 
@@ -15,7 +16,7 @@ def resources():
 
 @app.route('/genes/')
 def genes():
-    genes = models.Gene.query.order_by(models.Gene.name).all()
+    genes = models.Gene.query.with_entities(models.Gene.symbol, models.Gene.name).all()
     return render_template('genes.html', title="Genes", genes=genes)
 
 @app.route('/about/')

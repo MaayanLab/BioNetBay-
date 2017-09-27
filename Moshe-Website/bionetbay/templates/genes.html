@@ -1,10 +1,24 @@
 {% extends "base.html" %}
 {% block content %}
-<div align = "center" >
-  <h1>This is the Genes page!</h1>
-  <h3> Sample: </h3>
-  {% for gene in genes %}
-   <p><a href='/genepage/{{ gene.symbol }}'>{{ gene.symbol }}</a></b></p>
-  {% endfor %}
-</div>
+<div id="Resources-row" class="container-fluid">
+  <div class="container text-center">
+    <div class="scrollingTable">
+        <table id="example" class="display" cellspacing="0" width="100%" table-layout="fixed">
+          <thead>
+            <tr>
+              <th>Gene Symbol</th>
+              <th>Gene Name</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for gene in genes %}
+           <tr>
+             <td><a href='/genepage/{{ gene.symbol }}'>{{ gene.symbol }}</a></td>
+             <td>{{ gene.name }}</td>
+           </tr>
+           {% endfor %}
+           </tbody>
+      </table>
+    </div>
+  </div>
 {% endblock %}

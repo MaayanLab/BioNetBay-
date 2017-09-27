@@ -47,7 +47,7 @@ margin-top: 12px;
 
 #panel-heading {
 
-	background-color: #C0C0C0; 
+	background-color: #C0C0C0;
 }
 
 
@@ -58,11 +58,11 @@ margin-top: 12px;
 
 #file-img{
 
-	position: absolute;  
-        max-height: 100%;  
-        max-width: 100%; 
+	position: absolute;
+        max-height: 100%;
+        max-width: 100%;
         width: auto;
-        height: auto;    
+        height: auto;
         top: 0;  /*Centering the image*/
         bottom: 0;    /*Centering the image*/
         left: 0;   /*Centering the image*/
@@ -73,11 +73,11 @@ margin-top: 12px;
 
 
 #f{
-	position: absolute;  
+	position: absolute;
 		top: 0;  /*Centering the image*/
     	bottom: 0;    /*Centering the image*/
    		 left: 0;   /*Centering the image*/
-    	right: 0; 
+    	right: 0;
 		height: 120px;
 		width: 500px;
 		margin-top: 15px;
@@ -285,7 +285,7 @@ table, th, td {
 }
 
 #genes > .td {
-    text-align:center; 
+    text-align:center;
     vertical-align: middle;
     margin-left: 2px;
 }
@@ -324,7 +324,20 @@ th {
 ul    {
 
  list-style:inside;
- margin:3px; 
+ margin:3px;
  padding-left:0px;
 
+}
+
+.loading {
+    border-radius: 50%;
+    width: $base-line-height;
+    height: $base-line-height;
+    border: .25rem solid $off-white;
+    border-top-color: $white;
+    animation: spin $spin-duration infinite linear;
+  &--double {
+    border-style: double;
+    border-width: .5rem;
+  }
 }
