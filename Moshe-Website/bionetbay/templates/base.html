@@ -9,68 +9,39 @@
 	   <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script type="text/javascript" class="init"></script>
-    <script type="text/javascript" src="/media/js/dynamic.php?comments-page=examples%2Fbasic_init%2Fzero_configuration.html" async>
-</script>
-<script type="text/javascript" language="javascript" src="https://code.jquery.com/jquery-1.12.4.js">
-</script>
-<script type="text/javascript" language="javascript" src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js">
-</script>
-<style>
-.loader {
-    border: 16px solid #f3f3f3; /* Light grey */
-    border-top: 16px solid #3498db; /* Blue */
-    border-radius: 50%;
-    width: 120px;
-    height: 120px;
-    position: absolute;
-    margin: -150px 0 0 -150px;
-    left: 50%;
-    top: 50%;
-    animation: spin 2s linear infinite;
-}
+    <script type="text/javascript" src="/media/js/dynamic.php?comments-page=examples%2Fbasic_init%2Fzero_configuration.html" async></script>
+    <script type="text/javascript" language="javascript" src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script type="text/javascript" language="javascript" src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+    <script>$(document).ready(function() {$('#example').DataTable();} );</script>
+    <script>$(window).load(function() {yes();});function yes() {$('#loading').hide();$('#cover').show();};</script>
+    <link rel="stylesheet" href="/static/css/jquery.auto-complete.css">
+    <script src="/static/css/jquery.auto-complete.min.js"></script>
 
-@keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
-}
-</style>
-<script>
-
-    $(document).ready(function() {
-    	$('#example').DataTable();
-    } );
-
-
-    	</script>
-<script>
-$(window).load(function() {
-    yes();
-});
-
-function yes() {
-    $('#loading').hide();
-    $('#cover').show();
-};
-
-</script>
-    {% if title %}
-    <title>{{ title }} - BioNetBay</title>
-    {% else %}
-    <title> Welcome to BioNetBay</title>
-    {% endif %}
   </head>
-  <body>
-    <div class="topnav" id="myTopnav">
-      <a href="/index">Home</a>
-      <a href="/resources">Resources</a>
-      <a href="/genes">Genes</a>
-      <a href="/about">About</a>
-    </div>
-      <hr>
-      <div id="loading" align = "center" ><div class="loader"></div></div>
-        <div id="cover" style="display:none;">
-            {% block content %}{% endblock %}
-        </div>
+
+  <div id="loading" align = "center" ><div id="loader" class="loader"></div></div>
+    <div id="cover" style="display:none;">
+      {% if title %}
+      <title>{{ title }} - BioNetBay</title>
+      {% else %}
+      <title> Welcome to BioNetBay</title>
+      {% endif %}
+
+    <body id='home'>
+      <div class="topnav" id="myTopnav">
+        <a href="/index">Home</a>
+        <a href="/resources">Resources</a>
+        <a href="/genes">Genes</a>
+        <a href="/about">About</a>
       </div>
-  </body>
+        <hr>
+              {% block content %}{% endblock %}
+        <!-- <footer>
+          <p>
+            <hr>
+            Funded by <a href="http://commonfund.nih.gov/lincs/">The NIH Common Fund</a>. <a href="">Developed by the BD2K-LINCS DCIC</a>
+          </p>
+        </footer> -->
+    </body>
+  </div>
 </html>

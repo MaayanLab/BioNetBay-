@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block content %}
+<div align="center">
+<h1>{{ dataset.name }}</h1>
+</div>
+<hr>
+<div class="container">
+  <p><strong>Name:</strong> {{ dataset.name }}</p>
+  <p><strong>Description:</strong> {{ dataset.description }}</p>
+  <p><strong>Measurment:</strong> {{ dataset.measurement }}</p>
+  <p><strong>Associations:</strong> {{ dataset.association }}</p>
+  <p><strong>Category:</strong> {{ dataset.category }}</p>
+  <p><strong>Resource:</strong> {{ dataset.resource }}</p>
+  <p><strong>Number of Genes:</strong> {{ dataset.numb_genes }}</p>
+  <p><strong>Number of Attributes:</strong> {{ dataset.numb_associations }}</p>
+  <p><strong>Number of Gene-Attribute Associations:</strong> {{ dataset.numb_gene_associations }}</p>
+  <hr>
+  <p><strong>Processed Files:</strong></p>
+  {% for file in files %}
+  {% if file.file_type == 'GMT' %}
+  <li><a href={{ file.external_link }}>{{ file.name }}</a></li>
+  {% endif %}
+  {% endfor %}
+  <hr>
+  <p><strong>Processing Scripts:</strong></p>
+  {% for file in files %}
+  {% if file.file_type == 'IPYNB' %}
+  <li><a href={{ file.external_link }}>{{ file.name }}</a></li>
+  {% endif %}
+  {% endfor %}
+</div>
+
+{% endblock %}

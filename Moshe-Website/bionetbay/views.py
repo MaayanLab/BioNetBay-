@@ -7,11 +7,16 @@ from bionetbay import app, db, models
 @app.route('/')
 @app.route('/index/', methods=['GET'])
 def index():
-        return render_template('index.html', title='Home')
+    genes_l = models.Gene.query.with_entities(models.Gene.symbol).all()
+    genes_list = [gene[0] for gene in genes_l]
+    genes = models.Gene.query.count()
+    datasets = models.DataSet.query.count()
+    resources = models.Resources.query.count()
+    return render_template('index.html', title='Home', genes=genes, datasets=datasets, resources=resources, genes_list=genes_list)
 
 @app.route('/resources/')
 def resources():
-    resources = models.DataSet.query.order_by(models.DataSet.name).all()
+    resources = models.Resources.query.order_by(models.Resources.name).all()
     return render_template('resources.html', title="Resources", resources=resources)
 
 @app.route('/genes/')
@@ -34,14 +39,24 @@ def genapage(variable):
     if gene != None:
         return render_template('genepage.html', title=gene.symbol, gene=gene)
     else:
-        return render_template('genenotfound.html', title='Not Found', gene=gene)
+        return render_template('genenotfound.html', title='Gene Not Found', gene=variable)
+
 
 @app.route('/resourcepage/<variable>')
 def resourcepage(variable):
-    resource = models.DataSet.query.filter_by(name=variable).first()
-    directory = 'bionetbay/static/processedFiles/'+resource.name+'/'
-    files = os.listdir(directory)
-    return render_template('resourcepage.html', title=resource.name, resource=resource, files=files, directory=directory)
+    resource = models.Resources.query.filter_by(name=variable).first()
+    datasets = models.DataSet.query.filter_by(resource=variable).all()
+    citations = models.Citations.query.filter_by(resource=variable).all()
+    return render_template('resourcepage.html', title=resource.name, resource=resource, datasets=datasets, citations=citations)
+
+@app.route('/datasetpage/<variable>')
+def datasetpage(variable):
+    dataset = models.DataSet.query.filter_by(name=variable).first()
+    files = models.Files.query.filter_by(dataset=variable).all()
+    if dataset != None:
+        return render_template('datasetpage.html', title=dataset.name, dataset=dataset, files=files)
+    else:
+        return render_template('datasetpage.html', title='Not Found', dataset=dataset)
 
 @app.route("/downloadfile/")
 def downloadfile():

@@ -1,18 +1,46 @@
 {% extends "base.html" %}
 {% block content %}
 <div align = "center" >
-  <h1>Welcome to BioNetBay!</h1>
-  <h2>This is the home page!</h2>
-  <p>Enter gene to search here:</p>
-
+  <h1>BioNetBay</h1>
+  <h3>A Repository for Molecular Networks and Gene Sets</h3>
+  <div id="stat-row" class="container">
+    <div id="testing" class="container text-center">
+          <div id="stat" class="col-sm-4">
+          <a id= "glyph" href="/genes/"><span class="glyphicon glyphicon-signal"></span></a>
+              <h4>Genes: {{ genes }}</h4>
+          </div>
+          <div id="stat" class="col-sm-4">
+          <a id= "glyph" href="/resources/"><span class="glyphicon glyphicon-signal"></span></a>
+            <h4>Resources: {{ resources }}</h4>
+            <h4>Datasets: {{ datasets }}</h4>
+          </div>
+    </div>
+  </div>
+  <!-- {{ test }} -->
+  <script> var genesList = {{ genes_list|tojson }}; </script>
   <!-- Search Button -->
-
   <form id="search" method='post' action='/search/'>
       <div class="form-group">
       <div class="col-4">
-        <input name = 'gene' class="form-control" type="text" placeholder="Please input gene symbol to search the data">
+        <!-- <input name = 'gene' class="form-control" type="text" placeholder="Please input gene symbol to search the data"> -->
+        <input id="hero-demo" name = 'gene' autofocus type="text" name="q" placeholder="Please input gene symbol to search the data" style="width:100%;max-width:600px;outline:0">
       </div>
     </div>
+    <script>
+    $(function(){
+            $('#hero-demo').autoComplete({
+                minChars: 2,
+                source: function(term, suggest){
+                    term = term.toLowerCase();
+                    var choices = genesList;
+                    var suggestions = [];
+                    for (i=0;i<choices.length;i++)
+                        if (~choices[i].toLowerCase().indexOf(term)) suggestions.push(choices[i]);
+                    suggest(suggestions);
+                }
+            });
+          });
+</script>
       <button type="submit" class="btn btn-primary">Submit</button>
     </form>
 </div>
