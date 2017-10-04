@@ -67,3 +67,15 @@ def downloadfile():
         return send_from_directory(directory=directory, filename=filename, as_attachment=True)
     except Exception as e:
         return str(e)
+
+@app.route("/contribute/")
+def contribute():
+    return render_template('contribute.html', title='Contribute')
+
+@app.route("/contribute_resource/")
+def contributeResource():
+    return render_template('contributeResource.html', title='ContributeResource')
+
+@app.route("/contribute_dataset/")
+def contributeDataset():
+    return render_template('contributeDataset.html', title='ContributeDataset')

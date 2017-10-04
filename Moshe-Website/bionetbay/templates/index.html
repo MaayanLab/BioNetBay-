@@ -3,22 +3,28 @@
 <div align = "center" >
   <h1>BioNetBay</h1>
   <h3>A Repository for Molecular Networks and Gene Sets</h3>
-  <div id="stat-row" class="container">
-    <div id="testing" class="container text-center">
-          <div id="stat" class="col-sm-4">
+  <br />
+  <br />
+  <div class="row justify-content-center">
+          <div id="option" class="col-sm-3">
           <a id= "glyph" href="/genes/"><span class="glyphicon glyphicon-signal"></span></a>
               <h4>Genes: {{ genes }}</h4>
           </div>
-          <div id="stat" class="col-sm-4">
+          <div id="option" class="col-sm-3">
+            <a id= "glyph" href="/contribute/"><span class="glyphicon glyphicon-plus"></span></a>
+            <h4>Contribute to the Repository</h4>
+          </div>
+          <div id="option" class="col-sm-3">
           <a id= "glyph" href="/resources/"><span class="glyphicon glyphicon-signal"></span></a>
             <h4>Resources: {{ resources }}</h4>
             <h4>Datasets: {{ datasets }}</h4>
           </div>
-    </div>
   </div>
   <!-- {{ test }} -->
   <script> var genesList = {{ genes_list|tojson }}; </script>
   <!-- Search Button -->
+  <br />
+  <br />
   <form id="search" method='post' action='/search/'>
       <div class="form-group">
       <div class="col-4">
@@ -27,20 +33,20 @@
       </div>
     </div>
     <script>
-    $(function(){
-            $('#hero-demo').autoComplete({
-                minChars: 2,
-                source: function(term, suggest){
-                    term = term.toLowerCase();
-                    var choices = genesList;
-                    var suggestions = [];
-                    for (i=0;i<choices.length;i++)
-                        if (~choices[i].toLowerCase().indexOf(term)) suggestions.push(choices[i]);
-                    suggest(suggestions);
-                }
+      $(function(){
+              $('#hero-demo').autoComplete({
+                  minChars: 2,
+                  source: function(term, suggest){
+                      term = term.toLowerCase();
+                      var choices = genesList;
+                      var suggestions = [];
+                      for (i=0;i<choices.length;i++)
+                          if (~choices[i].toLowerCase().indexOf(term)) suggestions.push(choices[i]);
+                      suggest(suggestions);
+                  }
+              });
             });
-          });
-</script>
+      </script>
       <button type="submit" class="btn btn-primary">Submit</button>
     </form>
 </div>

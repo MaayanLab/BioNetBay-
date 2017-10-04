@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% block content %}
+<!-- This is the 'Contribute' page, where users can submit a form related to their dataset and upload it to the repository -->
+
+<div class="panel panel-default">
+<div class="panel-heading text-center" id="panel-heading">
+  <h2><b>Interested in Adding a new Resource to this Website? Fill out the form below!</b></h2>
+</div>
+
+
+<!-- Inputting Username and Password (later can be replaced with a Login button)  -->
+
+<div class="panel-body">
+
+<!-- Submission Name -->
+    <div class="form-group row">
+      <label for="text-input" class="col-3 col-form-label">Name of Resource</label>
+      <div class="col-12">
+        <input required name = "new_submission_name" class="form-control" type="text" placeholder="Please input new submission name" id="text-input">
+      </div>
+    </div>
+
+<!-- Submission Description -->
+
+    <div class="form-group row">
+      <label for="text-input" class="col-3 col-form-label">Description of Resource</label>
+      <div class="col-12">
+        <input name = "new_submission_description" class="form-control" type="text" id="text-input" placeholder="Please Include description of resource">
+      </div>
+
+<!-- External Link-->
+
+    </div>
+    <div class="form-group">
+      <label for="Select-Resource">External Link to Resource</label>
+      <div class="col-12">
+        <input name = "new_submission_link" class="form-control" type="text" id="text-input" placeholder="Please Include a link to the resource">
+      </div>
+
+
+
+
+      <br />
+<!-- Press 'submit' which redirects user to the Contribute page and initiates upload -->
+    <button type="submit" class="btn btn-primary">Submit</button>
+  </form>
+  </div>
+</div>
+</div>
+{% endblock %}
