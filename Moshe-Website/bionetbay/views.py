@@ -1,14 +1,16 @@
-from flask import render_template, request, redirect, send_from_directory
+from flask import render_template, request, redirect, send_from_directory, flash
 import os
 import time
 from bionetbay import app, db, models
 
+app.secret_key = 'random string'
 
 @app.route('/')
 @app.route('/index/', methods=['GET'])
 def index():
-    genes_l = models.Gene.query.with_entities(models.Gene.symbol).all()
-    genes_list = [gene[0] for gene in genes_l]
+    # genes_l = models.Gene.query.with_entities(models.Gene.symbol).all()
+    # genes_list = [gene[0] for gene in genes_l]
+    genes_list = []
     genes = models.Gene.query.count()
     datasets = models.DataSet.query.count()
     resources = models.Resources.query.count()
@@ -72,10 +74,18 @@ def downloadfile():
 def contribute():
     return render_template('contribute.html', title='Contribute')
 
-@app.route("/contribute_resource/")
+@app.route("/contribute_resource", methods=['GET', 'POST'])
 def contributeResource():
-    return render_template('contributeResource.html', title='ContributeResource')
+    if request.method == 'GET':
+        return render_template('contributeResource.html', title='ContributeResource')
+    else:
+        entry = models.Resources(name=request.form['new_submission_name'], description=request.form['new_submission_description'], external_link=request.form['new_submission_link'])
+        db.session.add(entry)
+        db.session.commit()
+        flash('Thank You for Contributing!')
+        return redirect('/index/')
 
-@app.route("/contribute_dataset/")
+
+@app.route("/contribute_dataset")
 def contributeDataset():
     return render_template('contributeDataset.html', title='ContributeDataset')

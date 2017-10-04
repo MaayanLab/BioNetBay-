@@ -5,7 +5,18 @@
   <h3>A Repository for Molecular Networks and Gene Sets</h3>
   <br />
   <br />
-  <div class="row justify-content-center">
+  <div class="container">
+  {% with messages = get_flashed_messages() %}
+   {% if messages %}
+     {% for message in messages %}
+     <div class="alert alert-success" id="success-alert">
+         <button type="button" class="close" data-dismiss="alert">x</button>
+         <strong>{{ message }}</strong>
+     </div>
+     {% endfor %}
+   {% endif %}
+  {% endwith %}
+  <!-- <div class="row justify-content-center">
           <div id="option" class="col-sm-3">
           <a id= "glyph" href="/genes/"><span class="glyphicon glyphicon-signal"></span></a>
               <h4>Genes: {{ genes }}</h4>
@@ -19,16 +30,26 @@
             <h4>Resources: {{ resources }}</h4>
             <h4>Datasets: {{ datasets }}</h4>
           </div>
+  </div> -->
+  <div class="row justify-content-center">
+    <div id="option" class="col-sm-3">
+      <a id= "glyph" href="/contribute/"><span class="glyphicon glyphicon-plus"></span></a>
+      <h4>Contribute to the Repository</h4>
+    </div>
+    <div id="option" class="col-sm-3">
+    <a id= "glyph" href="/resources/"><span class="glyphicon glyphicon-signal"></span></a>
+      <h4>Resources: {{ resources }}</h4>
+      <h4>Datasets: {{ datasets }}</h4>
+    </div>
   </div>
-  <!-- {{ test }} -->
   <script> var genesList = {{ genes_list|tojson }}; </script>
   <!-- Search Button -->
   <br />
   <br />
-  <form id="search" method='post' action='/search/'>
+
+  <!-- <form id="search" method='post' action='/search/'>
       <div class="form-group">
       <div class="col-4">
-        <!-- <input name = 'gene' class="form-control" type="text" placeholder="Please input gene symbol to search the data"> -->
         <input id="hero-demo" name = 'gene' autofocus type="text" name="q" placeholder="Please input gene symbol to search the data" style="width:100%;max-width:600px;outline:0">
       </div>
     </div>
@@ -48,6 +69,6 @@
             });
       </script>
       <button type="submit" class="btn btn-primary">Submit</button>
-    </form>
-</div>
+    </form> -->
+    <script>$("#success-alert").fadeTo(2000, 500).slideUp(500, function(){$("#success-alert").slideUp(500);});</script>
 {% endblock %}

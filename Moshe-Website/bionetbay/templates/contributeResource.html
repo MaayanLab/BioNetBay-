@@ -12,11 +12,13 @@
 
 <div class="panel-body">
 
+<form method='post' action='contribute_resource'>
+
 <!-- Submission Name -->
     <div class="form-group row">
       <label for="text-input" class="col-3 col-form-label">Name of Resource</label>
       <div class="col-12">
-        <input required name = "new_submission_name" class="form-control" type="text" placeholder="Please input new submission name" id="text-input">
+        <input required name = "new_submission_name" class="form-control" type="text" placeholder="Please input the new Resource name" id="text-input">
       </div>
     </div>
 
@@ -25,26 +27,24 @@
     <div class="form-group row">
       <label for="text-input" class="col-3 col-form-label">Description of Resource</label>
       <div class="col-12">
-        <input name = "new_submission_description" class="form-control" type="text" id="text-input" placeholder="Please Include description of resource">
+        <textarea name = "new_submission_description" class="form-control" type="text" id="text-input" placeholder="Please include a description of Resource"></textarea>
       </div>
 
 <!-- External Link-->
 
     </div>
-    <div class="form-group">
-      <label for="Select-Resource">External Link to Resource</label>
+    <div class="form-group row">
+      <label for="text-input" class="col-3 col-form-label">External Link to Resource</label>
       <div class="col-12">
-        <input name = "new_submission_link" class="form-control" type="text" id="text-input" placeholder="Please Include a link to the resource">
+        <input name = "new_submission_link" class="form-control" type="text" id="text-input" placeholder="Please include an external link to the Resource">
       </div>
-
-
-
-
+    </div>
       <br />
 <!-- Press 'submit' which redirects user to the Contribute page and initiates upload -->
     <button type="submit" class="btn btn-primary">Submit</button>
   </form>
   </div>
+</form>
 </div>
 </div>
 {% endblock %}
