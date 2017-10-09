@@ -1,4 +1,99 @@
 {% extends "base.html" %}
 {% block content %}
-  <h1>Contribute a dataset!</h1>
+<!-- This is the 'Contribute' page, where users can submit a form related to their dataset and upload it to the repository -->
+
+<div class="panel panel-default">
+  <div class="panel-heading text-center" id="panel-heading">
+    <h2><b>Interested in Adding a new Dataset to this Repository? Fill out the form below!</b></h2>
+  </div>
+
+
+<!-- Inputting Username and Password (later can be replaced with a Login button)  -->
+
+  <div class="panel-body">
+
+    <form method='post' action='contribute_dataset'>
+
+    <!-- Submission Name -->
+        <div class="form-group row">
+          <label for="text-input" class="col-3 col-form-label">Name of Dataset<sup>*</sup></label>
+          <div class="col-12">
+            <input required name = "new_submission_name" class="form-control" type="text" placeholder="Please input the new Resource name" id="text-input">
+          </div>
+        </div>
+
+
+    <!-- Submission Description -->
+
+        <div class="form-group row">
+          <label for="text-input" class="col-3 col-form-label">Description of Dataset</label>
+          <div class="col-12">
+            <textarea name = "new_submission_description" class="form-control" type="text" id="text-input" placeholder="Please include a description of Resource"></textarea>
+          </div>
+
+    <!-- External Link-->
+
+        </div>
+        <div class="form-group row">
+          <label for="text-input" class="col-3 col-form-label">Measurment Type</label>
+          <div class="col-12">
+            <input name = "new_submission_measurement" class="form-control" type="text" id="text-input" placeholder="Please include a measurement type e.g. 'gene expression by microarray'">
+          </div>
+        </div>
+
+      <div class="form-group row">
+        <label for="text-input" class="col-3 col-form-label">Association</label>
+        <div class="col-12">
+          <input name = "new_submission_association" class="form-control" type="text" id="text-input" placeholder="Please include an association e.g. 'gene-tissue association'">
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <label for="text-input" class="col-3 col-form-label">Category</label>
+        <div class="col-12">
+          <input name = "new_submission_category" class="form-control" type="text" id="text-input" placeholder="Please include a category e.g. 'Transcriptomics'">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="Select-Resource">Select Resource<sup>*</sup></label>
+        <select class="form-control" name="new_input_resource" size="1">
+          {% for resource in resources %}
+          <option>{{ resource[0] }}</option>
+          {% endfor %}
+        </select>
+        <small class="form-text text-muted"> Resource not available? Click <a href="/contribute_resource">Here</a> to add a new resource to the repository</small>
+      </div>
+
+      <div class="form-group row">
+        <label for="text-input" class="col-3 col-form-label">Number of Genes</label>
+        <div class="col-12">
+          <input name = "new_submission_number_of_genes" class="form-control" type="text" id="text-input" placeholder="Please include the number of genes in the dataset">
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <label for="text-input" class="col-3 col-form-label">Number of Samples</label>
+        <div class="col-12">
+          <input name = "new_submission_number_of_samples" class="form-control" type="text" id="text-input" placeholder="Please include the number of samples in the dataset">
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <label for="text-input" class="col-3 col-form-label">Number of Gene-Sample Associations</label>
+        <div class="col-12">
+          <input name = "new_submission_number_of_associations" class="form-control" type="text" id="text-input" placeholder="Please include the number of gene-sample associations in the dataset">
+        </div>
+      </div>
+      <sup><strong>*</strong></sup>indicates required field
+      <br />
+
+
+          <br />
+    <!-- Press 'submit' which redirects user to the Contribute page and initiates upload -->
+        <button type="submit" class="btn btn-primary">Submit</button>
+      </form>
+    </div>
+  </div>
+</div>
 {% endblock %}

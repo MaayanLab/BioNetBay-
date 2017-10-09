@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+{% block content %}
+<!-- This is the 'Contribute' page, where users can submit a form related to their dataset and upload it to the repository -->
+
+<div class="panel panel-default">
+  <div class="panel-heading text-center" id="panel-heading">
+    <h2><b>Interested in Adding a new File to this Repository? Fill out the form below!</b></h2>
+  </div>
+
+
+<!-- Inputting Username and Password (later can be replaced with a Login button)  -->
+
+  <div class="panel-body">
+
+    <form method='post' action='contribute_file'>
+
+    <!-- Submission Name -->
+        <div class="form-group row">
+          <label for="text-input" class="col-3 col-form-label">Name of File<sup>*</sup></label>
+          <div class="col-12">
+            <input required name = "new_file_name" class="form-control" type="text" placeholder="Please input the new File name" id="text-input">
+          </div>
+        </div>
+
+      <div class="form-group">
+        <label for="Select-Resource">Select Resource<sup>*</sup></label>
+        <select class="form-control" name="new_input_dataset" size="1">
+          {% for dataset in datasets %}
+          <option>{{ dataset[0] }}</option>
+          {% endfor %}
+        </select>
+        <small class="form-text text-muted"> Dataset not available? Click <a href="/contribute_dataset">Here</a> to add a new dataset to the repository</small>
+      </div>
+
+      <div class="form-group">
+        <label for="Select-Resource">Select File Type<sup>*</sup></label>
+        <select class="form-control" name="new_input_filetype" size="1">
+          <option>GMT</option>
+          <option>SIG</option>
+          <option>IPYNB</option>
+        </select>
+      </div>
+
+      <div class="form-group row">
+        <label for="text-input" class="col-3 col-form-label">Link to File<sup>*</sup></label>
+        <div class="col-12">
+          <input required name = "new_submission_link" class="form-control" type="text" id="text-input" placeholder="Please include a link to the file">
+        </div>
+      </div>
+
+          <sup><strong>*</strong></sup>indicates required field
+          <br />
+          <br />
+    <!-- Press 'submit' which redirects user to the Contribute page and initiates upload -->
+        <button type="submit" class="btn btn-primary">Submit</button>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}

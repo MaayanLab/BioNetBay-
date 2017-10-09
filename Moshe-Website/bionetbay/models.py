@@ -52,6 +52,7 @@ class Files(db.Model):
     dataset = db.Column(db.String(200), index=True, unique=False)
     file_type = db.Column(db.String(60), index=True, unique=False)
     external_link = db.Column(db.String(500), index=True, unique=False)
+    date_submission = db.Column(db.String(120), index=True, unique=False)
     #posts = db.relationship('Post', backref='author', lazy='dynamic')
 
     def __repr__(self):

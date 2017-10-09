@@ -16,18 +16,62 @@
   <p><strong>Number of Gene-Attribute Associations:</strong> {{ dataset.numb_gene_associations }}</p>
   <hr>
   <p><strong>Processed Files:</strong></p>
-  {% for file in files %}
-  {% if file.file_type == 'GMT' %}
-  <li><a href={{ file.external_link }}>{{ file.name }}</a></li>
-  {% endif %}
-  {% endfor %}
+  <div id="Resources-row" class="container-fluid">
+    <div class="container text-center">
+      <div class="scrollingTable">
+          <table id="example" class="display" cellspacing="0" width="100%" table-layout="fixed">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>File Type</th>
+                <th>Date Submitted</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for file in files %}
+              {% if file.file_type != 'IPYNB' %}
+             <tr>
+               <td><a href={{ file.external_link }}>{{ file.name }}</a></td>
+               <td>{{ file.file_type }}</td>
+               <td>{{ file.date_submission }}</td>
+             </tr>
+             {% endif %}
+             {% endfor %}
+             </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
   <hr>
   <p><strong>Processing Scripts:</strong></p>
-  {% for file in files %}
-  {% if file.file_type == 'IPYNB' %}
-  <li><a href={{ file.external_link }}>{{ file.name }}</a></li>
-  {% endif %}
-  {% endfor %}
+  <div id="Resources-row" class="container-fluid">
+    <div class="container text-center">
+      <div class="scrollingTable">
+          <table id="example2" class="display" cellspacing="0" width="100%" table-layout="fixed">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>File Type</th>
+                <th>Date Submitted</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for file in files %}
+              {% if file.file_type == 'IPYNB' %}
+             <tr>
+               <td><a href={{ file.external_link }}>{{ file.name }}</a></td>
+               <td>{{ file.file_type }}</td>
+               <td>{{ file.date_submission }}</td>
+             </tr>
+             {% endif %}
+             {% endfor %}
+             </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <br />
+  <br />
 </div>
 
 {% endblock %}

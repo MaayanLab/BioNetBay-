@@ -2,6 +2,7 @@ from flask import render_template, request, redirect, send_from_directory, flash
 import os
 import time
 from bionetbay import app, db, models
+import datetime
 
 app.secret_key = 'random string'
 
@@ -16,10 +17,15 @@ def index():
     resources = models.Resources.query.count()
     return render_template('index.html', title='Home', genes=genes, datasets=datasets, resources=resources, genes_list=genes_list)
 
-@app.route('/resources/')
+@app.route('/resources/', methods=['GET', 'POST'])
 def resources():
-    resources = models.Resources.query.order_by(models.Resources.name).all()
-    return render_template('resources.html', title="Resources", resources=resources)
+    if request.method == 'GET':
+        resources = models.Resources.query.order_by(models.Resources.name).all()
+        return render_template('resources.html', title="Resources", resources=resources)
+    else:
+        subquery = models.DataSet.query.filter(models.DataSet.category == request.form['gender']).with_entities(models.DataSet.resource).subquery()
+        resources = models.Resources.query.filter(models.Resources.name.in_(subquery)).all()
+        return render_template('resources.html', title="Resources", resources=resources)
 
 @app.route('/genes/')
 def genes():
@@ -86,6 +92,41 @@ def contributeResource():
         return redirect('/index/')
 
 
-@app.route("/contribute_dataset")
+@app.route("/contribute_dataset", methods=['GET', 'POST'])
 def contributeDataset():
-    return render_template('contributeDataset.html', title='ContributeDataset')
+    if request.method == 'GET':
+        resources = models.Resources.query.with_entities(models.Resources.name).all()
+        return render_template('contributeDataset.html', title='ContributeDataset', resources=resources)
+    else:
+        entry = models.DataSet(name=request.form['new_submission_name'],
+                                description=request.form['new_submission_description'],
+                                measurement=request.form['new_submission_measurement'],
+                                association=request.form['new_submission_association'],
+                                category=request.form['new_submission_category'],
+                                resource=request.form['new_input_resource'],
+                                numb_genes=request.form['new_submission_number_of_genes'],
+                                numb_associations=request.form['new_submission_number_of_samples'],
+                                numb_gene_associations=request.form['new_submission_number_of_associations'])
+        db.session.add(entry)
+        db.session.commit()
+        flash('Thank You for Contributing!')
+        return redirect('/index/')
+
+@app.route("/contribute_file", methods=['GET', 'POST'])
+def contributeFile():
+    if request.method == 'GET':
+        datasets = models.DataSet.query.with_entities(models.DataSet.name).all()
+        return render_template('contributeFile.html', title='ContributeFile', datasets=datasets)
+    else:
+        format = "%m-%d-%Y"
+        today = datetime.datetime.today()
+        entry = models.Files(name=request.form['new_file_name'],
+                                dataset=request.form['new_input_dataset'],
+                                file_type=request.form['new_input_filetype'],
+                                external_link=request.form['new_submission_link'],
+                                date_submission=today.strftime(format)
+                                )
+        db.session.add(entry)
+        db.session.commit()
+        flash('Thank You for Contributing!')
+        return redirect('/index/')

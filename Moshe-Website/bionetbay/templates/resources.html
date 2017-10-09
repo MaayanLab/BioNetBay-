@@ -1,5 +1,40 @@
 {% extends "base.html" %}
 {% block content %}
+<form action='/resources/' method='post'>
+  <input type="radio" name="gender" value="Transcriptomics"> Transcriptomics<br>
+  <input type="radio" name="gender" value="female"> Female<br>
+  <input type="radio" name="gender" value="Transcriptomics"> Transcriptomics<br>
+  <input type="radio" name="gender" value="submit"> Submit<br>
+</form>
+<script type='text/javascript'>
+
+ $(document).ready(function() {
+   $('input[name=gender]').change(function(){
+        $('form').submit();
+   });
+  });
+
+</script>
+  <!-- <div class="btn-group" data-toggle="buttons" >
+    <label class="btn btn-primary active">
+      <input type="radio" name="options" value='Kinase-Subtrate' id="option1" autocomplete="off" checked> Kinase-Subtrate
+    </label>
+    <label class="btn btn-primary">
+      <input type="radio" name="options" value='Protein-Protein' id="option2" autocomplete="off"> Protein-Protein
+    </label>
+    <label class="btn btn-primary">
+      <input type="radio" name="options" value='Transcription Factor-Target' id="option3" autocomplete="off"> Transcription Factor-Target
+    </label>
+    <label class="btn btn-primary">
+      <input type="radio" name="options" value='All' id="option4" autocomplete="off"> All
+    </label>
+  </div> -->
+
+
+</script>
+<br />
+<br />
+<br />
 <div id="Resources-row" class="container-fluid">
   <div class="container text-center">
     <div class="scrollingTable">
@@ -21,4 +56,5 @@
       </table>
     </div>
   </div>
+</div>
 {% endblock %}
