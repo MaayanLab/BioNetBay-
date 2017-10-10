@@ -1,16 +1,50 @@
 {% extends "base.html" %}
 {% block content %}
-<form action='/resources/' method='post'>
-  <input type="radio" name="gender" value="Transcriptomics"> Transcriptomics<br>
-  <input type="radio" name="gender" value="female"> Female<br>
-  <input type="radio" name="gender" value="Transcriptomics"> Transcriptomics<br>
-  <input type="radio" name="gender" value="submit"> Submit<br>
-</form>
+<!-- <script type='text/javascript'>
+
+ $(document).ready(function() {
+   $('input[name=filter]').change(function(){
+        $('form').submit();
+   });
+  });
+
+</script> -->
 <script type='text/javascript'>
 
  $(document).ready(function() {
-   $('input[name=gender]').change(function(){
-        $('form').submit();
+   $('input[name=filter]').change(function(){
+
+        // var checkedRadios = $('input[name=filter]:checked');
+        var val = $('input[name=filter]:checked').val();
+        // var val2 = $('input[name=filter]:checked').val();
+        // var val3 = $('input[name=filter]:checked').val();
+        // var val4 = $('input[name=filter]:checked').val();
+        // document.write(val)
+        // $('tbody tr').hide();
+
+        $('tbody tr:visible td.Type').each(function() {
+            var value = $(this).text();
+            // document.write(value)
+            if (value.includes(val)) {
+              // document.write('success');
+              window.alert('Success')
+              $(this).parent().show();
+            } else {
+              // document.write('fail');
+              $(this).parent().hide();
+            }
+        });
+
+        // $('tr').each(functin() {
+        //   var typ = $(this).find(.Type).text();
+        //   document.write(typ)
+        //
+        //   // if ((typ == val1)) {
+        //   //   $(this).show();
+        //   // } else {
+        //   //   $(this).hide
+        //   // }
+        // });
    });
   });
 
@@ -29,32 +63,48 @@
       <input type="radio" name="options" value='All' id="option4" autocomplete="off"> All
     </label>
   </div> -->
-
-
-</script>
 <br />
 <br />
 <br />
 <div id="Resources-row" class="container-fluid">
-  <div class="container text-center">
-    <div class="scrollingTable">
-        <table id="example" class="display" cellspacing="0" width="100%" table-layout="fixed">
-          <thead>
-            <tr>
-              <th>Name</th>
-              <th>Description</th>
-            </tr>
-          </thead>
-          <tbody>
-            {% for resource in resources %}
-           <tr>
-             <td><a href='/resourcepage/{{ resource.name }}'>{{ resource.name }}</a></td>
-             <td>{{ resource.description }}</td>
-           </tr>
-           {% endfor %}
-           </tbody>
-      </table>
+  <div class='col-sm-9'>
+    <div class="container text-center">
+      <div class="scrollingTable">
+          <table id="example" class="display" cellspacing="0" width="100%" table-layout="fixed">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Type</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for resource in resources %}
+             <tr>
+               <td><a href='/resourcepage/{{ resource.name }}'>{{ resource.name }}</a></td>
+               <td>{{ resource.description }}</td>
+               <td class="Type">
+                 {% for dataset in datasets %}
+                 {% if dataset.resource == resource.name %}
+                 {{ dataset.category }}
+                 {% endif %}
+                 {% endfor %}
+               </td>
+             </tr>
+             {% endfor %}
+             </tbody>
+        </table>
+      </div>
     </div>
+  </div>
+  <div class='col-sm-3'>
+    <h3>Filter Resources</h3>
+    <form action='/resources/' method='post'>
+      <div class="checkbox"><label><input type="checkbox" name="filter" value="Transcriptomics">Transcriptomics</label></div>
+      <div class="checkbox"><label><input type="checkbox" name="filter" value="Protein-Protien">Protein-Protien</label></div>
+      <div class="checkbox"><label><input type="checkbox" name="filter" value="Kinase-Substrate">Kinase-Substrate</label></div>
+      <div class="checkbox"><label><input type="checkbox" name="filter" value="Transcription Factor-Target">Transcription Factor-Target</label></div>
+    </form>
   </div>
 </div>
 {% endblock %}

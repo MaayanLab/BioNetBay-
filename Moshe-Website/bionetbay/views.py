@@ -21,9 +21,10 @@ def index():
 def resources():
     if request.method == 'GET':
         resources = models.Resources.query.order_by(models.Resources.name).all()
-        return render_template('resources.html', title="Resources", resources=resources)
+        datasets = models.DataSet.query.all()
+        return render_template('resources.html', title="Resources", resources=resources, datasets=datasets)
     else:
-        subquery = models.DataSet.query.filter(models.DataSet.category == request.form['gender']).with_entities(models.DataSet.resource).subquery()
+        subquery = models.DataSet.query.filter(models.DataSet.category == request.form['filter']).with_entities(models.DataSet.resource).subquery()
         resources = models.Resources.query.filter(models.Resources.name.in_(subquery)).all()
         return render_template('resources.html', title="Resources", resources=resources)
 
