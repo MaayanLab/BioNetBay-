@@ -67,6 +67,15 @@ class Citations(db.Model):
     def __repr__(self):
         return '<DataSet %r>' % (self.name)
 
+class Users(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(60), index=True, unique=False)
+    password = db.Column(db.String(60), index=True, unique=False)
+    #posts = db.relationship('Post', backref='author', lazy='dynamic')
+
+    def __repr__(self):
+        return '<DataSet %r>' % (self.name)
+
 # class Post(db.Model):
 #     id = db.Column(db.Integer, primary_key = True)
 #     body = db.Column(db.String(140))

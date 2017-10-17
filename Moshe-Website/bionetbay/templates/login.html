@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% block content %}
+{% if session['logged_in'] %}
+<p>You're logged in already!</p>
+{% else %}
+
+<div class="row justify-content-center">
+  <form action="/login" method="POST">
+  		<div class="login-screen">
+  			<div class="app-title">
+  				<h1>Login</h1>
+  			</div>
+
+  			<div class="login-form">
+  				<div class="control-group">
+  				<input type="text" class="login-field" value="" placeholder="username" name="username">
+  				<label class="login-field-icon fui-user" for="login-name"></label>
+  				</div>
+
+  				<div class="control-group">
+  				<input type="password" class="login-field" value="" placeholder="password" name="password">
+  				<label class="login-field-icon fui-lock" for="login-pass"></label>
+  				</div>
+
+          <input type="submit" value="Log in" class="btn btn-primary btn-large btn-block" >
+  			  <br />
+          <p>Don't have an account? <a href="/register">Sign up</a></p>
+  			</div>
+  		</div>
+      {% with messages = get_flashed_messages() %}
+       {% if messages %}
+         {% for message in messages %}
+         {% if message == 'You must be logged in to contribute!' %}
+         <div class="alert alert-warning" id="success-alert">
+             <button type="button" class="close" data-dismiss="alert">x</button>
+             <strong>{{ message }}</strong>
+         </div>
+         {% else %}
+         <div class="alert alert-danger" id="success-alert">
+             <button type="button" class="close" data-dismiss="alert">x</button>
+             <strong>{{ message }}</strong>
+         </div>
+         {% endif %}
+         {% endfor %}
+       {% endif %}
+      {% endwith %}
+  </form>
+</div>
+<script>$("#success-alert").fadeTo(2000, 500).slideUp(500, function(){$("#success-alert").slideUp(500);});</script>
+{% endif %}
+{% endblock %}

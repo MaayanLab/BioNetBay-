@@ -1,4 +1,4 @@
-from flask import render_template, request, redirect, send_from_directory, flash
+from flask import render_template, request, redirect, send_from_directory, flash, session
 import os
 import time
 from bionetbay import app, db, models
@@ -7,7 +7,7 @@ import datetime
 app.secret_key = 'random string'
 
 @app.route('/')
-@app.route('/index/', methods=['GET'])
+@app.route('/home/', methods=['GET'])
 def index():
     # genes_l = models.Gene.query.with_entities(models.Gene.symbol).all()
     # genes_list = [gene[0] for gene in genes_l]
@@ -17,16 +17,15 @@ def index():
     resources = models.Resources.query.count()
     return render_template('index.html', title='Home', genes=genes, datasets=datasets, resources=resources, genes_list=genes_list)
 
-@app.route('/resources/', methods=['GET', 'POST'])
+@app.route('/resources/')
 def resources():
-    if request.method == 'GET':
-        resources = models.Resources.query.order_by(models.Resources.name).all()
-        datasets = models.DataSet.query.all()
-        return render_template('resources.html', title="Resources", resources=resources, datasets=datasets)
-    else:
-        subquery = models.DataSet.query.filter(models.DataSet.category == request.form['filter']).with_entities(models.DataSet.resource).subquery()
-        resources = models.Resources.query.filter(models.Resources.name.in_(subquery)).all()
-        return render_template('resources.html', title="Resources", resources=resources)
+    resources = models.Resources.query.order_by(models.Resources.name).all()
+    datasets = models.DataSet.query.with_entities(models.DataSet.category, models.DataSet.resource).distinct()
+    return render_template('resources.html', title="Resources", resources=resources, datasets=datasets)
+    # else:
+    #     subquery = models.DataSet.query.filter(models.DataSet.category == request.form['filter']).with_entities(models.DataSet.resource).subquery()
+    #     resources = models.Resources.query.filter(models.Resources.name.in_(subquery)).all()
+    #     return render_template('resources.html', title="Resources", resources=resources)
 
 @app.route('/genes/')
 def genes():
@@ -79,7 +78,11 @@ def downloadfile():
 
 @app.route("/contribute/")
 def contribute():
-    return render_template('contribute.html', title='Contribute')
+    if session['logged_in'] == True:
+        return render_template('contribute.html', title='Contribute')
+    else:
+        flash('You must be logged in to contribute!')
+        return redirect('/loginPage')
 
 @app.route("/contribute_resource", methods=['GET', 'POST'])
 def contributeResource():
@@ -90,7 +93,7 @@ def contributeResource():
         db.session.add(entry)
         db.session.commit()
         flash('Thank You for Contributing!')
-        return redirect('/index/')
+        return redirect('/home/')
 
 
 @app.route("/contribute_dataset", methods=['GET', 'POST'])
@@ -111,7 +114,7 @@ def contributeDataset():
         db.session.add(entry)
         db.session.commit()
         flash('Thank You for Contributing!')
-        return redirect('/index/')
+        return redirect('/home/')
 
 @app.route("/contribute_file", methods=['GET', 'POST'])
 def contributeFile():
@@ -130,4 +133,46 @@ def contributeFile():
         db.session.add(entry)
         db.session.commit()
         flash('Thank You for Contributing!')
-        return redirect('/index/')
+        return redirect('/home/')
+
+@app.route("/loginPage")
+def loginPage():
+    return render_template('login.html', title='Login')
+
+
+@app.route("/login", methods=['POST'])
+def do_admin_login():
+
+    POST_USERNAME = str(request.form['username'])
+    POST_PASSWORD = str(request.form['password'])
+
+    found = models.Users.query.filter_by(username=POST_USERNAME, password=POST_PASSWORD).first()
+
+    if found:
+        session['logged_in'] = True
+        session['user'] = POST_USERNAME
+        flash('Login Successful!')
+        return redirect('/home/')
+    else:
+        flash('wrong password!')
+        return redirect('/loginPage')
+
+@app.route("/logout")
+def logout():
+    session['logged_in'] = False
+    flash('Successfully Logged Out!')
+    return redirect('/home')
+
+@app.route("/register", methods=['GET', 'POST'])
+def register():
+    if request.method == 'GET':
+        return render_template('register.html', title='Create Account')
+    else:
+        newUser = models.Users(username=request.form['new_username'],
+                            password=request.form['new_password']
+                            )
+        db.session.add(newUser)
+        db.session.commit()
+        session['logged_in'] = True
+        session['user'] = request.form['new_username']
+        return redirect('/home')

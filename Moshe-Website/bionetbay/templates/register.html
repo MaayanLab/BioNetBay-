@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% block content %}
+<!-- This is the 'Contribute' page, where users can submit a form related to their dataset and upload it to the repository -->
+<div class="row justify-content-center">
+<div class="panel panel-default" style="width: 50%;" >
+  <div class="panel-heading text-center" id="panel-heading">
+    <h2><b>Create a new Account</b></h2>
+  </div>
+
+
+<!-- Inputting Username and Password (later can be replaced with a Login button)  -->
+
+  <div class="panel-body">
+
+    <form method='post' action='/register'>
+
+    <!-- Submission Name -->
+        <div class="form-group row">
+          <label for="text-input" class="col-3 col-form-label">Username<sup>*</sup></label>
+          <div class="col-12">
+            <input required name = "new_username" class="form-control" type="text" placeholder="Username" id="text-input">
+          </div>
+        </div>
+
+    <!-- Submission Description -->
+
+        <div class="form-group row">
+          <label for="text-input" class="col-3 col-form-label">Password<sup>*</sup></label>
+          <div class="col-12">
+            <input name = "new_password" class="form-control" type="text" placeholder="Password"></textarea>
+          </div>
+
+    <!-- External Link-->
+
+        </div>
+        <div class="form-group row">
+          <label for="text-input" class="col-3 col-form-label">Confirm Password<sup>*</sup></label>
+          <div class="col-12">
+            <input name = "new_password_confirm" class="form-control" type="text" id="text-input" placeholder="Password (same as above)">
+          </div>
+        </div>
+        <sup><strong>*</strong></sup>indicates required field
+        <br />
+          <br />
+    <!-- Press 'submit' which redirects user to the Contribute page and initiates upload -->
+        <button type="submit" class="btn btn-primary">Submit</button>
+      </form>
+      <p>Already have an account? <a href="/loginPage">Sign in</a></p>
+    </div>
+</div>
+</div>
+{% endblock %}

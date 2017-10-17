@@ -1,68 +1,18 @@
 {% extends "base.html" %}
 {% block content %}
-<!-- <script type='text/javascript'>
 
- $(document).ready(function() {
-   $('input[name=filter]').change(function(){
-        $('form').submit();
-   });
-  });
-
-</script> -->
-<script type='text/javascript'>
-
- $(document).ready(function() {
-   $('input[name=filter]').change(function(){
-
-        // var checkedRadios = $('input[name=filter]:checked');
-        var val = $('input[name=filter]:checked').val();
-        // var val2 = $('input[name=filter]:checked').val();
-        // var val3 = $('input[name=filter]:checked').val();
-        // var val4 = $('input[name=filter]:checked').val();
-        // document.write(val)
-        // $('tbody tr').hide();
-
-        $('tbody tr:visible td.Type').each(function() {
-            var value = $(this).text();
-            // document.write(value)
-            if (value.includes(val)) {
-              // document.write('success');
-              window.alert('Success')
-              $(this).parent().show();
-            } else {
-              // document.write('fail');
-              $(this).parent().hide();
-            }
+<script>
+  function handleClick(cb) {
+    // window.alert("Clicked, new value = " + cb.name +' '+cb.checked);
+    $('tbody tr td.Type').each(function() {
+      var test = $(this).attr('id');
+      if(test == cb.value){
+        $(this).parent().toggle();
+      }
         });
-
-        // $('tr').each(functin() {
-        //   var typ = $(this).find(.Type).text();
-        //   document.write(typ)
-        //
-        //   // if ((typ == val1)) {
-        //   //   $(this).show();
-        //   // } else {
-        //   //   $(this).hide
-        //   // }
-        // });
-   });
-  });
-
+}
 </script>
-  <!-- <div class="btn-group" data-toggle="buttons" >
-    <label class="btn btn-primary active">
-      <input type="radio" name="options" value='Kinase-Subtrate' id="option1" autocomplete="off" checked> Kinase-Subtrate
-    </label>
-    <label class="btn btn-primary">
-      <input type="radio" name="options" value='Protein-Protein' id="option2" autocomplete="off"> Protein-Protein
-    </label>
-    <label class="btn btn-primary">
-      <input type="radio" name="options" value='Transcription Factor-Target' id="option3" autocomplete="off"> Transcription Factor-Target
-    </label>
-    <label class="btn btn-primary">
-      <input type="radio" name="options" value='All' id="option4" autocomplete="off"> All
-    </label>
-  </div> -->
+
 <br />
 <br />
 <br />
@@ -80,13 +30,13 @@
             </thead>
             <tbody>
               {% for resource in resources %}
+              {% for dataset in datasets %}
+              {% if dataset.resource == resource.name %}
              <tr>
                <td><a href='/resourcepage/{{ resource.name }}'>{{ resource.name }}</a></td>
                <td>{{ resource.description }}</td>
-               <td class="Type">
-                 {% for dataset in datasets %}
-                 {% if dataset.resource == resource.name %}
-                 {{ dataset.category }}
+               <td class="Type" id="{{ dataset.category }}">
+              {{ dataset.category }}
                  {% endif %}
                  {% endfor %}
                </td>
@@ -99,12 +49,12 @@
   </div>
   <div class='col-sm-3'>
     <h3>Filter Resources</h3>
-    <form action='/resources/' method='post'>
-      <div class="checkbox"><label><input type="checkbox" name="filter" value="Transcriptomics">Transcriptomics</label></div>
-      <div class="checkbox"><label><input type="checkbox" name="filter" value="Protein-Protien">Protein-Protien</label></div>
-      <div class="checkbox"><label><input type="checkbox" name="filter" value="Kinase-Substrate">Kinase-Substrate</label></div>
-      <div class="checkbox"><label><input type="checkbox" name="filter" value="Transcription Factor-Target">Transcription Factor-Target</label></div>
-    </form>
+    <div id="filter">
+      <div class="checkbox"><label><input type="checkbox" value="Transcriptomics" onclick='handleClick(this);' checked>Transcriptomics</label></div>
+      <div class="checkbox"><label><input type="checkbox" value="Protein-Protein" onclick='handleClick(this);' checked>Protein-Protein</label></div>
+      <div class="checkbox"><label><input type="checkbox" value="Kinase-Substrate" onclick='handleClick(this);' checked>Kinase-Substrate</label></div>
+      <div class="checkbox"><label><input type="checkbox" value="Transcription Factor-Target" onclick='handleClick(this);' checked>Transcription Factor-Target</label></div>
+    </div>
   </div>
 </div>
 {% endblock %}
