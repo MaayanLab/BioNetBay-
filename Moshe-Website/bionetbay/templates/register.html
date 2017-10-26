@@ -18,7 +18,14 @@
         <div class="form-group row">
           <label for="text-input" class="col-3 col-form-label">Username<sup>*</sup></label>
           <div class="col-12">
-            <input required name = "new_username" class="form-control" type="text" placeholder="Username" id="text-input">
+            <input required name = "username" class="form-control" type="text" placeholder="Username" id="text-input">
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <label for="text-input" class="col-3 col-form-label">Email<sup>*</sup></label>
+          <div class="col-12">
+            <input required name = "email" class="form-control" type="text" placeholder="example@example.com" id="text-input">
           </div>
         </div>
 
@@ -27,7 +34,7 @@
         <div class="form-group row">
           <label for="text-input" class="col-3 col-form-label">Password<sup>*</sup></label>
           <div class="col-12">
-            <input name = "new_password" class="form-control" type="text" placeholder="Password"></textarea>
+            <input name = "password" class="form-control" type="password" placeholder="Password"></textarea>
           </div>
 
     <!-- External Link-->
@@ -36,7 +43,7 @@
         <div class="form-group row">
           <label for="text-input" class="col-3 col-form-label">Confirm Password<sup>*</sup></label>
           <div class="col-12">
-            <input name = "new_password_confirm" class="form-control" type="text" id="text-input" placeholder="Password (same as above)">
+            <input name = "confirm" class="form-control" type="password" id="text-input" placeholder="Password (same as above)">
           </div>
         </div>
         <sup><strong>*</strong></sup>indicates required field
@@ -44,6 +51,7 @@
           <br />
     <!-- Press 'submit' which redirects user to the Contribute page and initiates upload -->
         <button type="submit" class="btn btn-primary">Submit</button>
+        {{ form.csrf_token }}
       </form>
       <p>Already have an account? <a href="/loginPage">Sign in</a></p>
     </div>

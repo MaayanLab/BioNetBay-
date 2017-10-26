@@ -1,4 +1,6 @@
-from bionetbay import db
+from bionetbay import db, bcrypt
+from sqlalchemy.ext.hybrid import hybrid_property
+from flask.ext.login import UserMixin
 
 class DataSet(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -67,11 +69,24 @@ class Citations(db.Model):
     def __repr__(self):
         return '<DataSet %r>' % (self.name)
 
-class Users(db.Model):
+class Users(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(60), index=True, unique=False)
-    password = db.Column(db.String(60), index=True, unique=False)
+    _password = db.Column(db.String(128), index=True, unique=False)
+    email = db.Column(db.String(128), index=True, unique=False)
+    active = db.Column(db.Boolean, index=True, unique=False)
     #posts = db.relationship('Post', backref='author', lazy='dynamic')
+
+    @hybrid_property
+    def password(self):
+        return self._password
+
+    @password.setter
+    def _set_password(self, plaintext):
+        self._password = bcrypt.generate_password_hash(plaintext)
+
+    def is_correct_password(self, plaintext):
+        return bcrypt.check_password_hash(self._password, plaintext)
 
     def __repr__(self):
         return '<DataSet %r>' % (self.name)

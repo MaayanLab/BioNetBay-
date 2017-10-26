@@ -1,10 +1,17 @@
-from flask import render_template, request, redirect, send_from_directory, flash, session
+from flask import render_template, request, redirect, send_from_directory, flash, session, url_for
 import os
 import time
-from bionetbay import app, db, models
+from bionetbay import app, db, models, mail
 import datetime
+from flask_mail import Message
+from .emails import send_email
+from itsdangerous import URLSafeTimedSerializer
+from .forms import RegistrationForm, UsernamePasswordForm
+from flask_login import login_user, logout_user, login_required
 
-app.secret_key = 'random string'
+app.secret_key = 'fbhwgcovmy'
+
+ts = URLSafeTimedSerializer(app.config["SECRET_KEY"])
 
 @app.route('/')
 @app.route('/home/', methods=['GET'])
@@ -77,12 +84,9 @@ def downloadfile():
         return str(e)
 
 @app.route("/contribute/")
+@login_required
 def contribute():
-    if session['logged_in'] == True:
-        return render_template('contribute.html', title='Contribute')
-    else:
-        flash('You must be logged in to contribute!')
-        return redirect('/loginPage')
+    return render_template('contribute.html', title='Contribute')
 
 @app.route("/contribute_resource", methods=['GET', 'POST'])
 def contributeResource():
@@ -140,39 +144,91 @@ def loginPage():
     return render_template('login.html', title='Login')
 
 
-@app.route("/login", methods=['POST'])
-def do_admin_login():
+@app.route("/login", methods=['GET', 'POST'])
+def login():
+    form = UsernamePasswordForm()
+    if form.validate_on_submit():
+        user = models.Users.query.filter_by(username=form.username.data).first_or_404()
+        if user.is_correct_password(form.password.data) and user.active==1:
+            login_user(user)
 
-    POST_USERNAME = str(request.form['username'])
-    POST_PASSWORD = str(request.form['password'])
+            flash('Login Successful!')
+            return redirect('/home/')
 
-    found = models.Users.query.filter_by(username=POST_USERNAME, password=POST_PASSWORD).first()
+        else:
+            flash('wrong password!')
+            return redirect("/login")
 
-    if found:
-        session['logged_in'] = True
-        session['user'] = POST_USERNAME
-        flash('Login Successful!')
-        return redirect('/home/')
-    else:
-        flash('wrong password!')
-        return redirect('/loginPage')
+    return render_template('login.html', title='Login', form=form)
+
+    # POST_USERNAME = str(request.form['username'])
+    # POST_PASSWORD = str(request.form['password'])
+    #
+    # found = models.Users.query.filter_by(username=POST_USERNAME, password=POST_PASSWORD).first()
+    #
+    # if found and found.active==1:
+    #     session['logged_in'] = True
+    #     session['user'] = POST_USERNAME
+    #     flash('Login Successful!')
+    #     return redirect('/home/')
+    # else:
+    #     flash('wrong password!')
+    #     return redirect('/loginPage')
 
 @app.route("/logout")
 def logout():
-    session['logged_in'] = False
+    logout_user()
     flash('Successfully Logged Out!')
     return redirect('/home')
 
 @app.route("/register", methods=['GET', 'POST'])
 def register():
-    if request.method == 'GET':
-        return render_template('register.html', title='Create Account')
-    else:
-        newUser = models.Users(username=request.form['new_username'],
-                            password=request.form['new_password']
+    form = RegistrationForm()
+    if form.validate_on_submit():
+
+        newUser = models.Users(username=form.username.data,
+                            password=form.password.data,
+                            email=form.email.data,
+                            active=0
                             )
         db.session.add(newUser)
         db.session.commit()
-        session['logged_in'] = True
-        session['user'] = request.form['new_username']
+
+        # Now we'll send the email confirmation link
+        subject = "Confirm your email"
+
+        token = ts.dumps('moshe.silverstein@mssm.edu', salt='email-confirm-key')
+
+        confirm_url = url_for(
+            'confirm_email',
+            token=token,
+            _external=True)
+
+        html = render_template(
+            'activate.html',
+            confirm_url=confirm_url)
+
+        send_email(subject, [newUser.email], html)
+
         return redirect('/home')
+    return render_template('register.html', title='Create Account', form=form)
+
+@app.route('/confirm/<token>')
+def confirm_email(token):
+    try:
+        email = ts.loads(token, salt="email-confirm-key", max_age=86400)
+    except:
+        abort(404)
+
+    user = models.Users.query.filter_by(email=email).first_or_404()
+
+    user.active = 1
+
+    db.session.add(user)
+    db.session.commit()
+
+    session['logged_in'] = True
+    session['user'] = user.username
+
+    flash('Your account is now active!')
+    return redirect('/home')
