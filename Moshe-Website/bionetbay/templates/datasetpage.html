@@ -5,15 +5,23 @@
 </div>
 <hr>
 <div class="container">
-  <p><strong>Name:</strong> {{ dataset.name }}</p>
-  <p><strong>Description:</strong> {{ dataset.description }}</p>
-  <p><strong>Measurment:</strong> {{ dataset.measurement }}</p>
-  <p><strong>Associations:</strong> {{ dataset.association }}</p>
-  <p><strong>Category:</strong> {{ dataset.category }}</p>
-  <p><strong>Resource:</strong> {{ dataset.resource }}</p>
-  <p><strong>Number of Genes:</strong> {{ dataset.numb_genes }}</p>
-  <p><strong>Number of Attributes:</strong> {{ dataset.numb_associations }}</p>
-  <p><strong>Number of Gene-Attribute Associations:</strong> {{ dataset.numb_gene_associations }}</p>
+  <div class="row">
+    <div class="col-5">
+      <p><strong>Name:</strong> {{ dataset.name }}</p>
+      <p><strong>Description:</strong> {{ dataset.description }}</p>
+      <p><strong>Resource:</strong> <a href='/resourcepage/{{ dataset.resource }}'>{{ dataset.resource }}</a></p>
+      <p><strong>Category:</strong> {{ dataset.category }}</p>
+    </div>
+    <div class="col-2">
+    </div>
+    <div class="col-5">
+      <p><strong>Measurment:</strong> {{ dataset.measurement }}</p>
+      <p><strong>Associations:</strong> {{ dataset.association }}</p>
+      <p><strong>Number of Genes:</strong> {{ dataset.numb_genes }}</p>
+      <p><strong>Number of Attributes:</strong> {{ dataset.numb_associations }}</p>
+      <p><strong>Number of Gene-Attribute Associations:</strong> {{ dataset.numb_gene_associations }}</p>
+    </div>
+  </div>
   <hr>
   <p><strong>Processed Files:</strong></p>
   <div id="Resources-row" class="container-fluid">
@@ -25,15 +33,19 @@
                 <th>Name</th>
                 <th>File Type</th>
                 <th>Date Submitted</th>
+                <th>Submitted By</th>
+                <th>Download</th>
               </tr>
             </thead>
             <tbody>
               {% for file in files %}
               {% if file.file_type != 'IPYNB' %}
              <tr>
-               <td><a href={{ file.external_link }}>{{ file.name }}</a></td>
+               <td>{{ file.name }}</td>
                <td>{{ file.file_type }}</td>
                <td>{{ file.date_submission }}</td>
+               <td>{{ file.submitter }}</td>
+               <td><a href={{ file.external_link }}><span class="glyphicon glyphicon-download-alt"></span></a></td>
              </tr>
              {% endif %}
              {% endfor %}
@@ -53,15 +65,19 @@
                 <th>Name</th>
                 <th>File Type</th>
                 <th>Date Submitted</th>
+                <th>Submitted By</th>
+                <th>Download</th>
               </tr>
             </thead>
             <tbody>
               {% for file in files %}
               {% if file.file_type == 'IPYNB' %}
              <tr>
-               <td><a href={{ file.external_link }}>{{ file.name }}</a></td>
+               <td>{{ file.name }}</td>
                <td>{{ file.file_type }}</td>
                <td>{{ file.date_submission }}</td>
+               <td>{{ file.submitter }}</td>
+               <td><a href={{ file.external_link }}><span class="glyphicon glyphicon-download-alt"></span></a></td>
              </tr>
              {% endif %}
              {% endfor %}

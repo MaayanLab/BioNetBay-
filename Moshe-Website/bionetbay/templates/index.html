@@ -1,74 +1,489 @@
 {% extends "base.html" %}
 {% block content %}
-<div align = "center" >
-  <h1>BioNetBay</h1>
-  <h3>A Repository for Molecular Networks and Gene Sets</h3>
-  <br />
-  <br />
-  <div class="container">
-  {% with messages = get_flashed_messages() %}
+
+<div class="container">
+  {% with messages = get_flashed_messages(with_categories=true) %}
    {% if messages %}
-     {% for message in messages %}
-     <div class="alert alert-success" id="success-alert">
+     {% for category, message in messages %}
+     <div class="alert alert-success" id="success-alert" align="center">
          <button type="button" class="close" data-dismiss="alert">x</button>
-         <strong>{{ message }}</strong>
+         <strong >{{ message }}</strong>
      </div>
      {% endfor %}
    {% endif %}
   {% endwith %}
-  <!-- <div class="row justify-content-center">
-          <div id="option" class="col-sm-3">
-          <a id= "glyph" href="/genes/"><span class="glyphicon glyphicon-signal"></span></a>
-              <h4>Genes: {{ genes }}</h4>
-          </div>
-          <div id="option" class="col-sm-3">
-            <a id= "glyph" href="/contribute/"><span class="glyphicon glyphicon-plus"></span></a>
-            <h4>Contribute to the Repository</h4>
-          </div>
-          <div id="option" class="col-sm-3">
-          <a id= "glyph" href="/resources/"><span class="glyphicon glyphicon-signal"></span></a>
-            <h4>Resources: {{ resources }}</h4>
-            <h4>Datasets: {{ datasets }}</h4>
-          </div>
-  </div> -->
-  <div class="row justify-content-center">
-    <div id="option" class="col-sm-3">
-      <a id= "glyph" href="/contribute/"><span class="glyphicon glyphicon-plus"></span></a>
-      <h4>Contribute to the Repository</h4>
-    </div>
-    <div id="option" class="col-sm-3">
-    <a id= "glyph" href="/resources/"><span class="glyphicon glyphicon-signal"></span></a>
-      <h4>Resources: {{ resources }}</h4>
-      <h4>Datasets: {{ datasets }}</h4>
-    </div>
-  </div>
-  <script> var genesList = {{ genes_list|tojson }}; </script>
-  <!-- Search Button -->
-  <br />
-  <br />
+</div>
 
-  <!-- <form id="search" method='post' action='/search/'>
-      <div class="form-group">
-      <div class="col-4">
-        <input id="hero-demo" name = 'gene' autofocus type="text" name="q" placeholder="Please input gene symbol to search the data" style="width:100%;max-width:600px;outline:0">
-      </div>
+<div class="container">
+
+  <div class="row">
+
+    <div align="center" class="col-3 col-md-3">
+      <br>
+      <br>
+      <br>
+      <a id= "glyph" href="/about/">
+        <div id="option">
+          <span class="glyphicon glyphicon-info-sign"></span>
+          <h4>About</h4>
+        </div>
+      </a>
     </div>
+
+    <div align="center" class="col-3 col-md-3">
+      <a id= "glyph" href="/contribute/">
+        <div id="option">
+          <span class="glyphicon glyphicon-plus"></span>
+          <strong>Contribute to the Repository</strong>
+        </div>
+      </a>
+    </div>
+
+    <div align="center" class="col-3 col-md-3">
+      <a id= "glyph" href="/resources/">
+        <div id="option">
+          <span class="glyphicon glyphicon-signal"></span>
+          <strong>Resources: {{ resources }}</strong><br>
+          <strong>Datasets: {{ datasets }}</strong> <br>
+          <strong>Files: {{ files }}</strong>
+        </div>
+      </a>
+    </div>
+
+    {% if current_user.is_authenticated %}
+    <div align="center" class="col-3 col-md-3">
+      <br>
+      <br>
+      <br>
+      <a id= "glyph" href="/logout">
+        <div id="option">
+          <span class="glyphicon glyphicon-log-out"></span>
+          <h4>Logout</h4>
+        </div>
+      </a>
+    </div>
+    {% else %}
+    <div align="center" class="col-3 col-md-3">
+      <br>
+      <br>
+      <br>
+      <a id= "glyph" href="/login">
+        <div id="option">
+          <span class="glyphicon glyphicon-log-in"></span>
+          <h4>Login</h4>
+        </div>
+      </a>
+    </div>
+    {% endif %}
+
+  </div>
+  <br>
+
+  <div class="row">
+
+    <div align="center" class="col-1 col-md-1">
+    </div>
+
+    <div align="center" class="col-10 col-md-10">
+      <div id="pieChart"></div>
+    </div>
+
+    <div align="center" class="col-1 col-md-1">
+    </div>
+
+
+  </div>
+
+  <div class="row">
+
+    <div align="center" class="col-4 col-md-4">
+      <div id="pieChart2"></div>
+    </div>
+
+    <div align="center" class="col-4 col-md-4">
+      <br>
+      <br>
+      <br>
+      <br>
+      <div id="pieChart3"></div>
+    </div>
+
+    <div align="center" class="col-4 col-md-4">
+      <div id="pieChart4"></div>
+    </div>
+
+  </div>
+
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/d3/4.7.2/d3.min.js"></script>
+    <script src="/static/css/d3pie.js"></script>
     <script>
-      $(function(){
-              $('#hero-demo').autoComplete({
-                  minChars: 2,
-                  source: function(term, suggest){
-                      term = term.toLowerCase();
-                      var choices = genesList;
-                      var suggestions = [];
-                      for (i=0;i<choices.length;i++)
-                          if (~choices[i].toLowerCase().indexOf(term)) suggestions.push(choices[i]);
-                      suggest(suggestions);
-                  }
+    var pie = new d3pie("pieChart", {
+    	"header": {
+    		"title": {
+    			"text": "BioNetBay",
+    			"fontSize": 54,
+    			"font": "courier"
+    		},
+    		"subtitle": {
+    			"text": "A Repository for Molecular Networks and Gene Sets",
+    			"color": "#999999",
+    			"fontSize": 10,
+    			"font": "courier"
+    		},
+    		"location": "pie-center",
+    		"titleSubtitlePadding": 10
+    	},
+    	"footer": {
+    		"text": "",
+    		"color": "#999999",
+    		"fontSize": 10,
+    		"font": "open sans",
+    		"location": "bottom-left"
+    	},
+    	"size": {
+    		// "canvasWidth": 790,
+    		"pieInnerRadius": "95%",
+    		"pieOuterRadius": "100%"
+    	},
+    	"data": {
+    		"sortOrder": "label-desc",
+
+    		"content": [
+          {% for key, value in count.items() %}
+    			{
+    				"label": "{{ key }}",
+    				"value": {{ value }},
+    			},
+          {% endfor %}
+    		]
+
+    	},
+    	"labels": {
+    		"outer": {
+    			"format": "label-percentage1",
+    			"pieDistance": 20
+    		},
+    		"inner": {
+    			"format": "none"
+    		},
+    		"mainLabel": {
+    			"fontSize": 11
+    		},
+    		"percentage": {
+    			"color": "#999999",
+    			"fontSize": 11,
+    			"decimalPlaces": 0
+    		},
+    		"value": {
+    			"color": "#cccc43",
+    			"fontSize": 11
+    		},
+    		"lines": {
+    			"enabled": true,
+    			"color": "#777777"
+    		},
+    		"truncation": {
+    			"enabled": true
+    		}
+    	},
+    	"effects": {
+    		"pullOutSegmentOnClick": {
+    			"effect": "linear",
+    			"speed": 400,
+    			"size": 8
+    		}
+    	},
+    	"misc": {
+    		"colors": {
+    			"segmentStroke": "#000000"
+    		}
+    	}
+    });
+    </script>
+
+    <script>
+    var pie = new d3pie("pieChart2", {
+      "header": {
+        "title": {
+          "text": "Interactions",
+          "fontSize": 16,
+          "font": "courier"
+        },
+        "subtitle": {
+          "text": "",
+          "color": "#999999",
+          "fontSize": 10,
+          "font": "courier"
+        },
+        "location": "pie-center",
+        "titleSubtitlePadding": 10
+      },
+      "footer": {
+        "text": "",
+        "color": "#999999",
+        "fontSize": 10,
+        "font": "open sans",
+        "location": "bottom-left"
+      },
+      "size": {
+        "canvasHeight": 170,
+        "canvasWidth": 350,
+        "pieInnerRadius": "95%",
+        "pieOuterRadius": "100%"
+      },
+      "data": {
+        "sortOrder": "label-desc",
+
+        "content": [
+          {% for key, value in count.items() %}
+          {
+            "label": "{{ key }}",
+            "value": {{ value }},
+          },
+          {% endfor %}
+        ]
+
+      },
+      "labels": {
+        "outer": {
+          "format": "label-percentage1",
+          "pieDistance": 10
+        },
+        "inner": {
+          "format": "none"
+        },
+        "mainLabel": {
+          "fontSize": 7
+        },
+        "percentage": {
+          "color": "#999999",
+          "fontSize": 7,
+          "decimalPlaces": 0
+        },
+        "value": {
+          "color": "#cccc43",
+          "fontSize": 7
+        },
+        "lines": {
+          "enabled": true,
+          "color": "#777777"
+        },
+        "truncation": {
+          "enabled": true
+        }
+      },
+      "effects": {
+        "pullOutSegmentOnClick": {
+          "effect": "linear",
+          "speed": 400,
+          "size": 8
+        }
+      },
+      "misc": {
+        "colors": {
+          "segmentStroke": "#000000"
+        }
+      }
+    });
+    </script>
+
+    <script>
+    var pie = new d3pie("pieChart3", {
+      "header": {
+        "title": {
+          "text": "Associations",
+          "fontSize": 16,
+          "font": "courier"
+        },
+        "subtitle": {
+          "text": "",
+          "color": "#999999",
+          "fontSize": 10,
+          "font": "courier"
+        },
+        "location": "pie-center",
+        "titleSubtitlePadding": 10
+      },
+      "footer": {
+        "text": "",
+        "color": "#999999",
+        "fontSize": 10,
+        "font": "open sans",
+        "location": "bottom-left"
+      },
+      "size": {
+        "canvasHeight": 170,
+        "canvasWidth": 350,
+        "pieInnerRadius": "95%",
+        "pieOuterRadius": "100%"
+      },
+      "data": {
+        "sortOrder": "label-desc",
+
+        "content": [
+          {% for key, value in count.items() %}
+          {
+            "label": "{{ key }}",
+            "value": {{ value }},
+          },
+          {% endfor %}
+        ]
+
+      },
+      "labels": {
+        "outer": {
+          "format": "label-percentage1",
+          "pieDistance": 10
+        },
+        "inner": {
+          "format": "none"
+        },
+        "mainLabel": {
+          "fontSize": 7
+        },
+        "percentage": {
+          "color": "#999999",
+          "fontSize": 7,
+          "decimalPlaces": 0
+        },
+        "value": {
+          "color": "#cccc43",
+          "fontSize": 7
+        },
+        "lines": {
+          "enabled": true,
+          "color": "#777777"
+        },
+        "truncation": {
+          "enabled": true
+        }
+      },
+      "effects": {
+        "pullOutSegmentOnClick": {
+          "effect": "linear",
+          "speed": 400,
+          "size": 8
+        }
+      },
+      "misc": {
+        "colors": {
+          "segmentStroke": "#000000"
+        }
+      }
+    });
+    </script>
+
+    <script>
+    var pie = new d3pie("pieChart4", {
+      "header": {
+        "title": {
+          "text": "Ontologies",
+          "fontSize": 16,
+          "font": "courier"
+        },
+        "subtitle": {
+          "text": "",
+          "color": "#999999",
+          "fontSize": 10,
+          "font": "courier"
+        },
+        "location": "pie-center",
+        "titleSubtitlePadding": 10
+      },
+      "footer": {
+        "text": "",
+        "color": "#999999",
+        "fontSize": 10,
+        "font": "open sans",
+        "location": "bottom-left"
+      },
+      "size": {
+        "canvasHeight": 170,
+        "canvasWidth": 350,
+        "pieInnerRadius": "95%",
+        "pieOuterRadius": "100%"
+      },
+      "data": {
+        "sortOrder": "label-desc",
+
+        "content": [
+          {% for key, value in count.items() %}
+          {
+            "label": "{{ key }}",
+            "value": {{ value }},
+          },
+          {% endfor %}
+        ]
+
+      },
+      "labels": {
+        "outer": {
+          "format": "label-percentage1",
+          "pieDistance": 10
+        },
+        "inner": {
+          "format": "none"
+        },
+        "mainLabel": {
+          "fontSize": 7
+        },
+        "percentage": {
+          "color": "#999999",
+          "fontSize": 7,
+          "decimalPlaces": 0
+        },
+        "value": {
+          "color": "#cccc43",
+          "fontSize": 7
+        },
+        "lines": {
+          "enabled": true,
+          "color": "#777777"
+        },
+        "truncation": {
+          "enabled": true
+        }
+      },
+      "effects": {
+        "pullOutSegmentOnClick": {
+          "effect": "linear",
+          "speed": 400,
+          "size": 8
+        }
+      },
+      "misc": {
+        "colors": {
+          "segmentStroke": "#000000"
+        }
+      }
+    });
+    </script>
+
+
+    <!-- <form id="search" method='post' action='/search/'>
+        <div class="form-group">
+        <div class="col-4">
+          <input id="hero-demo" name = 'gene' autofocus type="text" name="q" placeholder="Please input gene symbol to search the data" style="width:100%;max-width:600px;outline:0">
+        </div>
+      </div>
+      <script>
+        $(function(){
+                $('#hero-demo').autoComplete({
+                    minChars: 2,
+                    source: function(term, suggest){
+                        term = term.toLowerCase();
+                        var choices = genesList;
+                        var suggestions = [];
+                        for (i=0;i<choices.length;i++)
+                            if (~choices[i].toLowerCase().indexOf(term)) suggestions.push(choices[i]);
+                        suggest(suggestions);
+                    }
+                });
               });
-            });
-      </script>
-      <button type="submit" class="btn btn-primary">Submit</button>
-    </form> -->
-    <script>$("#success-alert").fadeTo(2000, 500).slideUp(500, function(){$("#success-alert").slideUp(500);});</script>
+        </script>
+        <button type="submit" class="btn btn-primary">Submit</button>
+      </form> -->
+      <script>$("#success-alert").fadeTo(2000, 500).slideUp(500, function(){$("#success-alert").slideUp(500);});</script>
+</div>
 {% endblock %}

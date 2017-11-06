@@ -22,12 +22,16 @@
           </div>
         </div>
 
+        {% if form.email.errors %}
+            <div class="errors" style="color:red">{% for error in form.email.errors %}{{ error }}{% endfor %}</div>
+        {% endif %}
         <div class="form-group row">
           <label for="text-input" class="col-3 col-form-label">Email<sup>*</sup></label>
           <div class="col-12">
             <input required name = "email" class="form-control" type="text" placeholder="example@example.com" id="text-input">
           </div>
         </div>
+
 
     <!-- Submission Description -->
 
@@ -36,16 +40,18 @@
           <div class="col-12">
             <input name = "password" class="form-control" type="password" placeholder="Password"></textarea>
           </div>
-
-    <!-- External Link-->
-
         </div>
+
+        {% if form.password.errors %}
+            <div class="errors" style="color:red">{% for error in form.password.errors %}{{ error }}{% endfor %}</div>
+        {% endif %}
         <div class="form-group row">
           <label for="text-input" class="col-3 col-form-label">Confirm Password<sup>*</sup></label>
           <div class="col-12">
             <input name = "confirm" class="form-control" type="password" id="text-input" placeholder="Password (same as above)">
           </div>
         </div>
+
         <sup><strong>*</strong></sup>indicates required field
         <br />
           <br />
@@ -55,6 +61,17 @@
       </form>
       <p>Already have an account? <a href="/loginPage">Sign in</a></p>
     </div>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+     {% if messages %}
+       {% for category, message in messages %}
+       <div class="{{ category }}" id="success-alert">
+           <button type="button" class="close" data-dismiss="alert">x</button>
+           <strong>{{ message }}</strong>
+       </div>
+       {% endfor %}
+     {% endif %}
+    {% endwith %}
 </div>
 </div>
+<script>$("#success-alert").fadeTo(2000, 500).slideUp(500, function(){$("#success-alert").slideUp(500);});</script>
 {% endblock %}

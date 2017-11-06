@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="row justify-content-center">
+<div class="panel panel-default" style="width: 50%;" >
+  <div class="panel-heading text-center" id="panel-heading">
+    <h2><b>Password Reset</b></h2>
+  </div>
+
+
+<!-- Inputting Username and Password (later can be replaced with a Login button)  -->
+
+  <div class="panel-body">
+
+    <form method='post' action='/reset'>
+      <p>Please provide the email address associated with the account. <br />
+        An email will be sent to the provided account with instructions to reset your password.</p>
+
+    <!-- Submission Name -->
+    <div class="form-group row">
+      <label for="text-input" class="col-3 col-form-label">Email</label>
+      <div class="col-12">
+        <input required name = "email" class="form-control" type="text" placeholder="example@example.com" id="text-input">
+      </div>
+    </div>
+          <button type="submit" class="btn btn-primary">Submit</button>
+          {{ form.csrf_token }}
+  			  <br />
+  			</div>
+  		</div>
+      {% with messages = get_flashed_messages() %}
+       {% if messages %}
+         {% for message in messages %}
+         <div class="alert alert-danger" id="success-alert">
+             <button type="button" class="close" data-dismiss="alert">x</button>
+             <strong>{{ message }}</strong>
+         </div>
+         {% endfor %}
+       {% endif %}
+      {% endwith %}
+  </form>
+</div>
+<script>$("#success-alert").fadeTo(2000, 500).slideUp(500, function(){$("#success-alert").slideUp(500);});</script>
+{% endblock %}

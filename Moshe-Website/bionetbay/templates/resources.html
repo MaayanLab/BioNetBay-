@@ -1,6 +1,5 @@
 {% extends "base.html" %}
 {% block content %}
-
 <script>
   function handleClick(cb) {
     // window.alert("Clicked, new value = " + cb.name +' '+cb.checked);
@@ -24,7 +23,7 @@
             <thead>
               <tr>
                 <th>Name</th>
-                <th>Description</th>
+                <!-- <th>Description</th> -->
                 <th>Type</th>
               </tr>
             </thead>
@@ -34,7 +33,7 @@
               {% if dataset.resource == resource.name %}
              <tr>
                <td><a href='/resourcepage/{{ resource.name }}'>{{ resource.name }}</a></td>
-               <td>{{ resource.description }}</td>
+               <!-- <td>{{ resource.description }}</td> -->
                <td class="Type" id="{{ dataset.category }}">
               {{ dataset.category }}
                  {% endif %}

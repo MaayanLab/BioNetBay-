@@ -147,30 +147,46 @@ margin-top: 12px;
 
 
 #option {
-	height: 200px;
-	width: 250px;
-	background-color: #1D2541;
-	color: white;
-	margin: 50px;
-	border-radius: 15px;
+	font: arial;
+	height: 150px;
+	width: 150px;
+	/*background-color: #1D2541;*/
+	color: #1D2541;
+	/*margin: 50px;*/
+	-moz-border-radius: 60px;
+	-webkit-border-radius: 60px;
+	border-radius: 200px/200px;
+	/*margin-top: 300px;*/
+	border: solid 4px #1D2541;
+}
 
+#option:hover {
+	color: grey;
+	border: solid 6px grey;
 }
 
 #stat {
-	height: 200px;
-	width: 35%;
-	background-color: #1D2541;
-	color: white;
-	font-size: 15px;
-	margin-top: 50px;
-	margin-bottom: 50px;
-	margin-left: 10%;
-	border-radius: 15px;
-
+	font: arial;
+	height: 220px;
+	width: 220px;
+	/*background-color: #1D2541;*/
+	color: #1D2541;
+	margin: 50px;
+	-moz-border-radius: 60px;
+	-webkit-border-radius: 60px;
+	border-radius: 200px/200px;
+	border: solid 6px #1D2541;
 }
+
+#stat:hover {
+	color: lightgrey;
+	border: solid 6px lightgrey;
+}
+
 #stat-row {
 	margin: auto;
 }
+
 #testing {
 	width: 60%;
 }
@@ -190,23 +206,44 @@ margin-top: 12px;
 }
 
 .glyphicon.glyphicon-plus{
-	font-size: 70px;
+	font-size: 30px;
 	display: block;
 	margin: 25px;
 	text-align: center;
 }
 
 .glyphicon.glyphicon-signal{
-	font-size: 70px;
+	font-size: 28px;
 	display: block;
 	margin: 25px;
 	text-align: center;
 }
 
+.glyphicon.glyphicon-info-sign {
+	font-size: 50px;
+	display: block;
+	margin: 25px;
+	text-align: center;
+}
+
+.glyphicon.glyphicon-log-in {
+	font-size: 50px;
+	display: block;
+	margin: 25px;
+	text-align: center;
+}
+
+.glyphicon.glyphicon-log-out {
+	font-size: 50px;
+	display: block;
+	margin: 25px;
+	text-align: center;
+}
 #glyph:hover {
 
 	text-decoration: none;
 }
+
 
 
 #title-row2 {
@@ -230,8 +267,8 @@ margin-top: 12px;
 
 body {
 	background-color: white;
-	padding-top: 50 px;
-	padding-bottom: 50 px;
+	/*padding-top: 50px;*/
+	padding-bottom: 50px;
 	font-family: "Arial", Sans-serif;
 }
 
@@ -276,9 +313,35 @@ body {
     color: white;
 }
 
-footer {
-	background-color: black;
+/*.footer {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  padding: 1rem;
 	color: white;
+  background-color: #333;
+}*/
+.footer {
+    height:24px; // Replace with the height your footer should be
+    width: 100%; // Don't change
+    background-image: none;
+    background-repeat: repeat;
+    background-attachment: scroll;
+    background-position: 0% 0%;
+    position: fixed;
+    bottom: 0pt;
+    left: 0pt;
+		color: white;
+		background-color: #333;
+}
+
+.footer_contents {
+
+    height:24px; // Replace with the height your footer should be
+    width: 1000px; // Visible width of footer
+    margin:auto;
+
 }
 
 /*

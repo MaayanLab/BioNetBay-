@@ -1,23 +1,65 @@
 {% extends "base.html" %}
 {% block content %}
-<div align = "center" >
+<!-- <div align = "center" >
   <h1>{{ resource.name }}</h1>
 </div>
+<hr> -->
 <div class="container">
-  <p><strong>Name:</strong> {{ resource.name }}</p>
-  <p><strong>Description:</strong> {{ resource.description }}</p>
+  <div class="row">
+    <div class=col-2>
+      <strong style="font-size:15px">Name:</strong>
+    </div>
+    <div class=col-10>
+      <strong style="font-size:25px">{{ resource.name }}</strong>
+    </div>
+  </div>
+
   <hr>
-  <p><strong>Citation(s):</strong>
-    {% for citation in citations %}
-    <li><a href={{ citation.citation }}>{{ citation.citation }}</a></li>
-    {% endfor %}
-  </p>
+
+  <div class="row">
+    <div class=col-2>
+      <strong style="font-size:15px">Description:</strong>
+    </div>
+    <div class=col-10>
+      {{ resource.description }}
+    </div>
+  </div>
+
   <hr>
-  <p><strong>External Link:</strong> <a href={{ resource.external_link }}>{{ resource.external_link }}</a></p>
+
+  <div class="row">
+    <div class=col-2>
+      <strong style="font-size:15px"> External Link:  </strong>
+    </div>
+    <div class=col-10>
+      <a href={{ resource.external_link }}>{{ resource.external_link }}</a>
+    </div>
+  </div>
+
   <hr>
-  <p><strong>Datasets:</strong></p>
-  {% for dataset in datasets %}
-  <li><a href='/datasetpage/{{ dataset.name }}'>{{ dataset.name }}</a></li>
-  {% endfor %}
-</div>
+
+  <div class="row">
+    <div class=col-2>
+      <strong style="font-size:15px"> Citation(s):</strong>
+    </div>
+    <div class=col-10>
+      {% for citation in citations %}
+      <li>{{ citation.citation }}</li>
+      {% endfor %}
+    </div>
+  </div>
+
+  <hr>
+
+  <div class="row">
+    <div class=col-2>
+      <strong style="font-size:25px">  Dataset(s):</strong>
+    </div>
+    <div class=col-10>
+      {% for dataset in datasets %}
+      <li><a href='/datasetpage/{{ dataset.name }}'>{{ dataset.name }}</a></li>
+      {% endfor %}
+    </div>
+  </div>
+
 {% endblock %}

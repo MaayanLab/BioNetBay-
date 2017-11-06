@@ -6,8 +6,9 @@ import datetime
 from flask_mail import Message
 from .emails import send_email
 from itsdangerous import URLSafeTimedSerializer
-from .forms import RegistrationForm, UsernamePasswordForm
-from flask_login import login_user, logout_user, login_required
+from .forms import RegistrationForm, UsernamePasswordForm, EmailForm, PasswordForm, ResourceForm, DatasetForm, FileForm
+from flask_login import login_user, logout_user, login_required, current_user
+from collections import Counter
 
 app.secret_key = 'fbhwgcovmy'
 
@@ -22,7 +23,13 @@ def index():
     genes = models.Gene.query.count()
     datasets = models.DataSet.query.count()
     resources = models.Resources.query.count()
-    return render_template('index.html', title='Home', genes=genes, datasets=datasets, resources=resources, genes_list=genes_list)
+    files = models.Files.query.count()
+    categories = models.DataSet.query.with_entities(models.DataSet.category).all()
+    lst = []
+    for element in categories:
+        lst.append(element[0])
+    count = dict(Counter(lst))
+    return render_template('index.html', title='Home', genes=genes, datasets=datasets, resources=resources, files=files, genes_list=genes_list, count=count)
 
 @app.route('/resources/')
 def resources():
@@ -90,54 +97,58 @@ def contribute():
 
 @app.route("/contribute_resource", methods=['GET', 'POST'])
 def contributeResource():
-    if request.method == 'GET':
-        return render_template('contributeResource.html', title='ContributeResource')
-    else:
-        entry = models.Resources(name=request.form['new_submission_name'], description=request.form['new_submission_description'], external_link=request.form['new_submission_link'])
+    form = ResourceForm()
+    if form.validate_on_submit():
+        entry = models.Resources(name=form.name.data, description=form.description.data, external_link=form.link.data)
         db.session.add(entry)
         db.session.commit()
-        flash('Thank You for Contributing!')
-        return redirect('/home/')
+        flash('Thank You for Contributing!', "alert alert-success")
+        return redirect('/home')
+
+    return render_template('contributeResource.html', title='ContributeResource', form=form)
 
 
 @app.route("/contribute_dataset", methods=['GET', 'POST'])
 def contributeDataset():
-    if request.method == 'GET':
-        resources = models.Resources.query.with_entities(models.Resources.name).all()
-        return render_template('contributeDataset.html', title='ContributeDataset', resources=resources)
-    else:
-        entry = models.DataSet(name=request.form['new_submission_name'],
-                                description=request.form['new_submission_description'],
-                                measurement=request.form['new_submission_measurement'],
-                                association=request.form['new_submission_association'],
-                                category=request.form['new_submission_category'],
-                                resource=request.form['new_input_resource'],
-                                numb_genes=request.form['new_submission_number_of_genes'],
-                                numb_associations=request.form['new_submission_number_of_samples'],
-                                numb_gene_associations=request.form['new_submission_number_of_associations'])
+    resources = models.Resources.query.with_entities(models.Resources.name).all()
+    form = DatasetForm()
+    if form.validate_on_submit():
+        entry = models.DataSet(name=form.name.data,
+                                description=form.description.data,
+                                measurement=form.measurement.data,
+                                association=form.association.data,
+                                category=form.category.data,
+                                resource=form.resource.data,
+                                numb_genes=form.number_of_genes.data,
+                                numb_associations=form.number_of_samples.data,
+                                numb_gene_associations=form.number_of_associations.data)
         db.session.add(entry)
         db.session.commit()
-        flash('Thank You for Contributing!')
-        return redirect('/home/')
+        flash('Thank You for Contributing!', "alert alert-success")
+        return redirect('/home')
+
+    return render_template('contributeDataset.html', title='ContributeDataset', resources=resources, form=form)
 
 @app.route("/contribute_file", methods=['GET', 'POST'])
 def contributeFile():
-    if request.method == 'GET':
-        datasets = models.DataSet.query.with_entities(models.DataSet.name).all()
-        return render_template('contributeFile.html', title='ContributeFile', datasets=datasets)
-    else:
+    form = FileForm()
+    datasets = models.DataSet.query.with_entities(models.DataSet.name).all()
+    if form.validate_on_submit():
         format = "%m-%d-%Y"
         today = datetime.datetime.today()
-        entry = models.Files(name=request.form['new_file_name'],
-                                dataset=request.form['new_input_dataset'],
-                                file_type=request.form['new_input_filetype'],
-                                external_link=request.form['new_submission_link'],
-                                date_submission=today.strftime(format)
+        entry = models.Files(name=form.name.data,
+                                dataset=form.dataset.data,
+                                file_type=form.file_type.data,
+                                external_link=form.link.data,
+                                date_submission=today.strftime(format),
+                                submitter=current_user.username
                                 )
         db.session.add(entry)
         db.session.commit()
-        flash('Thank You for Contributing!')
-        return redirect('/home/')
+        flash('Thank You for Contributing!', "alert alert-success")
+        return redirect('/home')
+
+    return render_template('contributeFile.html', title='ContributeFile', datasets=datasets, form=form)
 
 @app.route("/loginPage")
 def loginPage():
@@ -148,15 +159,22 @@ def loginPage():
 def login():
     form = UsernamePasswordForm()
     if form.validate_on_submit():
-        user = models.Users.query.filter_by(username=form.username.data).first_or_404()
-        if user.is_correct_password(form.password.data) and user.active==1:
-            login_user(user)
+        user = models.Users.query.filter_by(username=form.username.data).first()
+        if user:
+            if user.is_correct_password(form.password.data):
+                if user.active==1:
+                    login_user(user)
 
-            flash('Login Successful!')
-            return redirect('/home/')
-
+                    flash('Login Successful!')
+                    return redirect('/home/')
+                else:
+                    flash('account not activated!', 'alert alert-danger')
+                    return redirect("/login")
+            else:
+                flash('wrong password!', 'alert alert-danger')
+                return redirect("/login")
         else:
-            flash('wrong password!')
+            flash('username not in system!', 'alert alert-danger')
             return redirect("/login")
 
     return render_template('login.html', title='Login', form=form)
@@ -185,32 +203,40 @@ def logout():
 def register():
     form = RegistrationForm()
     if form.validate_on_submit():
+        if not models.Users.query.filter_by(username=form.username.data).first():
+            if not models.Users.query.filter_by(email=form.email.data).first():
+                newUser = models.Users(username=form.username.data,
+                                    password=form.password.data,
+                                    email=form.email.data,
+                                    active=0
+                                    )
+                db.session.add(newUser)
+                db.session.commit()
 
-        newUser = models.Users(username=form.username.data,
-                            password=form.password.data,
-                            email=form.email.data,
-                            active=0
-                            )
-        db.session.add(newUser)
-        db.session.commit()
+                # Now we'll send the email confirmation link
+                subject = "Confirm your email"
 
-        # Now we'll send the email confirmation link
-        subject = "Confirm your email"
+                token = ts.dumps('moshe.silverstein@mssm.edu', salt='email-confirm-key')
 
-        token = ts.dumps('moshe.silverstein@mssm.edu', salt='email-confirm-key')
+                confirm_url = url_for(
+                    'confirm_email',
+                    token=token,
+                    _external=True)
 
-        confirm_url = url_for(
-            'confirm_email',
-            token=token,
-            _external=True)
+                html = render_template(
+                    'activate.html',
+                    confirm_url=confirm_url)
 
-        html = render_template(
-            'activate.html',
-            confirm_url=confirm_url)
-
-        send_email(subject, [newUser.email], html)
-
-        return redirect('/home')
+                send_email(subject, [newUser.email], html)
+                flash('Account created', 'alert alert-success')
+                flash('An email was sent to confimr your email', 'alert alert-success')
+                return redirect('/home')
+            else:
+                flash('email already in system, please use unique email!', 'alert alert-danger')
+                render_template('register.html', title='Create Account', form=form)
+        else:
+            flash('username already taken!', 'alert alert-danger')
+            render_template('register.html', title='Create Account', form=form)
     return render_template('register.html', title='Create Account', form=form)
 
 @app.route('/confirm/<token>')
@@ -232,3 +258,53 @@ def confirm_email(token):
 
     flash('Your account is now active!')
     return redirect('/home')
+
+@app.route('/reset', methods=["GET", "POST"])
+def reset():
+    form = EmailForm()
+    if form.validate_on_submit():
+        user = models.Users.query.filter_by(email=form.email.data).first_or_404()
+
+        subject = "Password reset requested"
+
+        # Here we use the URLSafeTimedSerializer we created in `util` at the
+        # beginning of the chapter
+        token = ts.dumps(user.email, salt='recover-key')
+
+        recover_url = url_for(
+            'reset_with_token',
+            token=token,
+            _external=True)
+
+        html = render_template(
+            'recover.html',
+            recover_url=recover_url)
+
+        # Let's assume that send_email was defined in myapp/util.py
+        send_email(subject, [user.email], html)
+
+        flash('An email has been sent')
+        return redirect('/home')
+    return render_template('reset.html', form=form)
+
+@app.route('/reset/<token>', methods=["GET", "POST"])
+def reset_with_token(token):
+    try:
+        email = ts.loads(token, salt="recover-key", max_age=86400)
+    except:
+        abort(404)
+
+    form = PasswordForm()
+
+    if form.validate_on_submit():
+        user = models.Users.query.filter_by(email=email).first_or_404()
+
+        user.password = form.password.data
+
+        db.session.add(user)
+        db.session.commit()
+
+        flash('Password Reset Successful!', "alert alert-success")
+        return redirect('/login')
+
+    return render_template('reset_with_token.html', form=form, token=token)

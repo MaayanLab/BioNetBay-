@@ -21,7 +21,7 @@ class DataSet(db.Model):
 class Resources(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(200), index=True, unique=True)
-    description = db.Column(db.String(1000), index=True, unique=True)
+    description = db.Column(db.String(2000), index=True, unique=True)
     external_link = db.Column(db.String(500), index=True, unique=True)
     #posts = db.relationship('Post', backref='author', lazy='dynamic')
 
@@ -55,6 +55,7 @@ class Files(db.Model):
     file_type = db.Column(db.String(60), index=True, unique=False)
     external_link = db.Column(db.String(500), index=True, unique=False)
     date_submission = db.Column(db.String(120), index=True, unique=False)
+    submitter = db.Column(db.String(120), index=True, unique=False)
     #posts = db.relationship('Post', backref='author', lazy='dynamic')
 
     def __repr__(self):

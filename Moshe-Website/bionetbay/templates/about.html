@@ -1,4 +1,11 @@
 {% extends "base.html" %}
 {% block content %}
-  <h1>This is the About page!</h1>
+<h1>BioNetBay: Repository Overview</h1>
+<p>
+  <strong>BioNetBay</strong> is an online repository that stores gene sets pertaining to molecular interaction networks. Currently, network data stored in the repository focuses on three different interaction types: kinase-substrate (phosphorylation), protein-protein (binding), and transcription factor-target interactions.
+
+In addition to storing gene sets, BioNetBay also allows users to query genes in the database. These queries will return a list of genes matching your query and, once the gene of interest is chosen, the interaction data for this gene will be shown. Interaction data will include the interaction type, interacting gene, resource from which the data originated, and the role of the gene in this interaction (if any).
+
+To contribute interaction data, add a new resource, or add a new interaction type to the repository, please visit the 'Contribute' page.
+</p>
 {% endblock %}
