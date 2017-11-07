@@ -9,6 +9,20 @@
         $(this).parent().toggle();
       }
         });
+
+    $('tbody tr td.SubType').each(function() {
+      var test = $(this).attr('id');
+      if(test == cb.value){
+        $(this).parent().toggle();
+      }
+        });
+
+    $('li.Sub').each(function() {
+      var test = $(this).attr('id');
+      if(test == cb.value){
+        $(this).toggle();
+      }
+        });
 }
 </script>
 
@@ -24,7 +38,8 @@
               <tr>
                 <th>Name</th>
                 <!-- <th>Description</th> -->
-                <th>Type</th>
+                <th>Category</th>
+                <th>Sub-Category</th>
               </tr>
             </thead>
             <tbody>
@@ -36,9 +51,13 @@
                <!-- <td>{{ resource.description }}</td> -->
                <td class="Type" id="{{ dataset.category }}">
               {{ dataset.category }}
-                 {% endif %}
-                 {% endfor %}
                </td>
+               <td class="SubType" id="{{ dataset.sub_category }}">
+              {{ dataset.sub_category }}
+              </td>
+             {% endif %}
+             {% endfor %}
+
              </tr>
              {% endfor %}
              </tbody>
@@ -49,10 +68,47 @@
   <div class='col-sm-3'>
     <h3>Filter Resources</h3>
     <div id="filter">
-      <div class="checkbox"><label><input type="checkbox" value="Transcriptomics" onclick='handleClick(this);' checked>Transcriptomics</label></div>
-      <div class="checkbox"><label><input type="checkbox" value="Protein-Protein" onclick='handleClick(this);' checked>Protein-Protein</label></div>
-      <div class="checkbox"><label><input type="checkbox" value="Kinase-Substrate" onclick='handleClick(this);' checked>Kinase-Substrate</label></div>
-      <div class="checkbox"><label><input type="checkbox" value="Transcription Factor-Target" onclick='handleClick(this);' checked>Transcription Factor-Target</label></div>
+      <ul>
+        <li>
+          <div class="checkbox"><label><input type="checkbox" value="Association" onclick='handleClick(this);' checked>Association</label></div>
+          <ul>
+            <li class="Sub" id="Association">
+              <div class="checkbox"><label><input type="checkbox" value="Tissue" onclick='handleClick(this);' checked>Tissue</label></div>
+            </li>
+            <li class="Sub" id="Association">
+              <div class="checkbox"><label><input type="checkbox" value="Sample" onclick='handleClick(this);' checked>Sample</label></div>
+            </li>
+          </ul>
+        </li>
+        <li>
+          <div class="checkbox"><label><input type="checkbox" value="Interaction" onclick='handleClick(this);' checked>Interaction</label></div>
+          <ul>
+            <li class="Sub" id="Interaction">
+              <div class="checkbox"><label><input type="checkbox" value="Kinase-Substrate" onclick='handleClick(this);' checked>Kinase-Substrate</label></div>
+            </li>
+            <li class="Sub" id="Interaction">
+              <div class="checkbox"><label><input type="checkbox" value="Protein-Protein" onclick='handleClick(this);' checked>Protein-Protein</label></div>
+            </li>
+            <li class="Sub" id="Interaction">
+              <div class="checkbox"><label><input type="checkbox" value="Transcription Factor-Target" onclick='handleClick(this);' checked>Transcription Factor-Target</label></div>
+            </li>
+          </ul>
+        </li>
+        <li>
+          <div class="checkbox"><label><input type="checkbox" value="Ontology" onclick='handleClick(this);' checked>Ontology</label></div>
+          <ul>
+            <li class="Sub" id="Ontology">
+              <div class="checkbox"><label><input type="checkbox" value="Biological Process" onclick='handleClick(this);' checked>Biological Process</label></div>
+            </li>
+            <li class="Sub" id="Ontology">
+              <div class="checkbox"><label><input type="checkbox" value="Cellular Component" onclick='handleClick(this);' checked>Cellular Component</label></div>
+            </li>
+            <li class="Sub" id="Ontology">
+              <div class="checkbox"><label><input type="checkbox" value="Molecular Function" onclick='handleClick(this);' checked>Molecular Function</label></div>
+            </li>
+          </ul>
+        </li>
+      </ul>
     </div>
   </div>
 </div>

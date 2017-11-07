@@ -24,17 +24,45 @@ def index():
     datasets = models.DataSet.query.count()
     resources = models.Resources.query.count()
     files = models.Files.query.count()
-    categories = models.DataSet.query.with_entities(models.DataSet.category).all()
-    lst = []
-    for element in categories:
-        lst.append(element[0])
-    count = dict(Counter(lst))
-    return render_template('index.html', title='Home', genes=genes, datasets=datasets, resources=resources, files=files, genes_list=genes_list, count=count)
+
+    # datasetsInfo = models.DataSet.query.with_entities(models.DataSet.category, models.DataSet.sub_category).all()
+    # lst1 = []
+    # lst2 = []
+    # lst3 = []
+    # lst4 = []
+    # for dataset in datasetsInfo:
+    #     lst1.append(dataset.category)
+    #     if dataset.category == "Interaction":
+    #         lst2.append(dataset.sub_category)
+    #     elif dataset.category == "Association":
+    #         lst3.append(dataset.sub_category)
+    #     elif dataset.category == "Ontology":
+    #         lst4.append(dataset.sub_category)
+    # count = dict(Counter(lst1))
+    # interactions_count = dict(Counter(lst2))
+    # associations_count = dict(Counter(lst3))
+    # ontologies_count = dict(Counter(lst4))
+    count = models.Categories.query.all()
+    interactions_count = models.SubCategories.query.filter_by(category='Interaction').all()
+    associations_count = models.SubCategories.query.filter_by(category='Association').all()
+    ontologies_count = models.SubCategories.query.filter_by(category='Ontology').all()
+
+    return render_template('index.html',
+                            title='Home',
+                            genes=genes,
+                            datasets=datasets,
+                            resources=resources,
+                            files=files,
+                            genes_list=genes_list,
+                            count=count,
+                            interactions_count=interactions_count,
+                            associations_count=associations_count,
+                            ontologies_count=ontologies_count)
 
 @app.route('/resources/')
 def resources():
     resources = models.Resources.query.order_by(models.Resources.name).all()
-    datasets = models.DataSet.query.with_entities(models.DataSet.category, models.DataSet.resource).distinct()
+    datasets = models.DataSet.query.with_entities(models.DataSet.category, models.DataSet.resource, models.DataSet.sub_category).distinct()
     return render_template('resources.html', title="Resources", resources=resources, datasets=datasets)
     # else:
     #     subquery = models.DataSet.query.filter(models.DataSet.category == request.form['filter']).with_entities(models.DataSet.resource).subquery()
@@ -118,11 +146,18 @@ def contributeDataset():
                                 measurement=form.measurement.data,
                                 association=form.association.data,
                                 category=form.category.data,
+                                sub_category=form.sub_category.data,
                                 resource=form.resource.data,
                                 numb_genes=form.number_of_genes.data,
                                 numb_associations=form.number_of_samples.data,
                                 numb_gene_associations=form.number_of_associations.data)
         db.session.add(entry)
+        db.session.commit()
+        catstat = models.Categories.query.filter_by(name=form.category.data).first()
+        catstat.stat += 1
+        db.session.commit()
+        subcatstat = models.SubCategories.query.filter_by(name=form.sub_category.data).first()
+        subcatstat.stat += 1
         db.session.commit()
         flash('Thank You for Contributing!', "alert alert-success")
         return redirect('/home')
@@ -130,6 +165,7 @@ def contributeDataset():
     return render_template('contributeDataset.html', title='ContributeDataset', resources=resources, form=form)
 
 @app.route("/contribute_file", methods=['GET', 'POST'])
+@login_required
 def contributeFile():
     form = FileForm()
     datasets = models.DataSet.query.with_entities(models.DataSet.name).all()

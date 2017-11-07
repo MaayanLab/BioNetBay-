@@ -1,38 +1,41 @@
 {% extends "base.html" %}
 {% block content %}
-<div align = "center" >
-  <h1>Contribute</h1>
-  <h3>What would you like to contribute?</h3>
-</div>
-  <br />
-  <br />
-  <div class="row justify-content-center">
+<div class='container'>
+  <div align = "center" >
+    <h1>Contribute</h1>
+    <h3>What would you like to contribute?</h3>
+  </div>
+    <br />
+    <br />
+    <div class="row justify-content-center">
 
-    <div class="col-3">
-      <a id= "glyph" href="/contribute_resource">
-        <div id="stat" >
-            <span class="glyphicon glyphicon-plus"></span>
-            <h4 align="center">Contribute Resource</h4>
-        </div>
-      </a>
-    </div>
+      <div class="col-3">
+        <a id= "glyph" href="/contribute_resource">
+          <div id="stat" >
+              <span class="glyphicon glyphicon-plus" style="font-size:50px"></span>
+              <h4 align="center" style="font-size:30px">Contribute Resource</h4>
+          </div>
+        </a>
+      </div>
 
-    <div class="col-3">
-      <a id= "glyph"  href="/contribute_dataset">
-        <div id="stat">
-          <span class="glyphicon glyphicon-plus"></span>
-          <h4 align="center">Contribute Dataset</h4>
-        </div>
-      </a>
-    </div>
+      <div class="col-3">
+        <a id= "glyph"  href="/contribute_dataset">
+          <div id="stat">
+            <span class="glyphicon glyphicon-plus"  style="font-size:50px"></span>
+            <h4 align="center" style="font-size:30px">Contribute Dataset</h4>
+          </div>
+        </a>
+      </div>
 
-    <div class="col-3">
-      <a id= "glyph"  href="/contribute_file">
-        <div id="stat">
-          <span class="glyphicon glyphicon-plus"></span>
-          <h4 align="center">Contribute File</h4>
-        </div>
-      </a>
+      <div class="col-3">
+        <a id= "glyph"  href="/contribute_file">
+          <div id="stat">
+            <span class="glyphicon glyphicon-plus" style="font-size:50px"></span>
+            <h4 align="center" style="font-size:30px">Contribute <br> File</h4>
+          </div>
+        </a>
+      </div>
     </div>
+  </div>
 
 {% endblock %}

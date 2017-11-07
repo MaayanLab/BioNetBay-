@@ -22,6 +22,15 @@
           </div>
         </div>
 
+        <div class="form-group">
+          <label for="Select-Resource">Select Resource<sup>*</sup></label>
+          <select class="form-control" name="resource" size="1">
+            {% for resource in resources %}
+            <option>{{ resource[0] }}</option>
+            {% endfor %}
+          </select>
+          <small class="form-text text-muted"> Resource not available? Click <a href="/contribute_resource">Here</a> to add a new resource to the repository</small>
+        </div>
 
     <!-- Submission Description -->
 
@@ -51,21 +60,26 @@
       <div class="form-group">
         <label for="Select-Category">Select Category<sup>*</sup></label>
         <select class="form-control" name="category" size="1">
-          <option>Transcriptomics</option>
-          <option>Protein-Protein</option>
-          <option>Kinase-Substrate</option>
-          <option>Transcription Factor-Target</option>
+          <option></option>
+          <option>Association</option>
+          <option>Interaction</option>
+          <option>Ontology</option>
         </select>
       </div>
 
       <div class="form-group">
-        <label for="Select-Resource">Select Resource<sup>*</sup></label>
-        <select class="form-control" name="resource" size="1">
-          {% for resource in resources %}
-          <option>{{ resource[0] }}</option>
-          {% endfor %}
+        <label for="Select-Category">Select Sub-Category<sup>*</sup></label>
+        <select class="form-control" name="sub_category" size="1">
+          <option class="Sub" id=""></option>
+          <option class="Sub" id="Association">Tissue</option>
+          <option class="Sub" id="Association">Sample</option>
+          <option class="Sub" id="Interaction">Kinase-Substrate</option>
+          <option class="Sub" id="Interaction">Protein-Protein</option>
+          <option class="Sub" id="Interaction">Transcription Factor-Target</option>
+          <option class="Sub" id="Ontology">Biological Process</option>
+          <option class="Sub" id="Ontology">Cellular Component</option>
+          <option class="Sub" id="Ontology">Molecular Function</option>
         </select>
-        <small class="form-text text-muted"> Resource not available? Click <a href="/contribute_resource">Here</a> to add a new resource to the repository</small>
       </div>
 
       <div class="form-group row">
@@ -99,5 +113,27 @@
       </form>
     </div>
   </div>
+  <script>
+  $(function(){
+    $('option.Sub').each(function() {
+      $(this).hide();
+    });
+      // When your year changes...
+    $('[name="category"]').change(function(){
+      var category = $(this).val();
+      // window.alert($(this).val())
+      $('option.Sub').each(function() {
+        var test = $(this).attr('id');
+        if(test == category){
+          $(this).show();
+        }
+        else {
+          $(this).hide();
+        }
+
+          });
+    });
+  })
+</script>
 </div>
 {% endblock %}

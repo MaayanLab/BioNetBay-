@@ -1,11 +1,86 @@
 {% extends "base.html" %}
 {% block content %}
-<h1>BioNetBay: Repository Overview</h1>
-<p>
-  <strong>BioNetBay</strong> is an online repository that stores gene sets pertaining to molecular interaction networks. Currently, network data stored in the repository focuses on three different interaction types: kinase-substrate (phosphorylation), protein-protein (binding), and transcription factor-target interactions.
-
-In addition to storing gene sets, BioNetBay also allows users to query genes in the database. These queries will return a list of genes matching your query and, once the gene of interest is chosen, the interaction data for this gene will be shown. Interaction data will include the interaction type, interacting gene, resource from which the data originated, and the role of the gene in this interaction (if any).
-
-To contribute interaction data, add a new resource, or add a new interaction type to the repository, please visit the 'Contribute' page.
-</p>
+<div class="container" align="center">
+  <h1>BioNetBay: Repository Overview</h1>
+</div>
+<br>
+<div class="container" id="about">
+    <p>
+      <strong>BioNetBay</strong> is an online repository that stores gene sets and gene networks. <br><br>
+      You can browse the repository and dowload files by visiting the <strong>Resources</strong> tab. <br><br>
+      You can contribute a file to the repository by visiting the the <strong>Contribute</strong> tab. <br><br>
+      Please note, that you must be signed in in order to contribute to the repository. Click on the <strong>Login</strong>
+      tab to sign in or to create an account.
+    </p>
+</div>
+<hr>
+<div class="container" align="center">
+  <h3>How the repository works</h3>
+</div>
+<div class="container" id="about" align="center">
+  The repository consists of three basic components: <strong>Resource</strong>,
+  <strong>Dataset</strong> and <strong>File</strong>
+</div>
+<br>
+<div class="container" id="about">
+    <p>
+      <strong>Resource:</strong><br>
+      <p>
+        Resource refers to the source of the data, either as the original generator or curator of the data. <br>
+        Examples: <i>Allen Brain Altas</i>, <i>BioGRID</i><br>
+        <i>Resources</i> contian <i>Datasets</i>.
+      </p>
+    </p>
+    <br>
+    <p>
+      <strong>Dataset:</strong><br>
+      <p>
+        Dataset refers to the specific set of data from the resource.<br>
+        Examples: <i>Allen Brain Altas-Adult Human Brain</i>, <i>Allen Brain Altas-Adult Mouse Brain</i><br>
+        <i>Datasets</i> contian <i>Files</i>.
+      </p>
+    </p>
+    <br>
+    <p>
+      <strong>File:</strong><br>
+      <p>
+        Files make up the heart of the repository.<br>
+        Files contain gene association/interaction libraries in the form of either a GMT file or a SIG file.<br>
+      </p>
+    </p>
+</div>
+<hr>
+<div class="container" align="center">
+  <h3>How the repository is categorized</h3>
+</div>
+<div class="container" id="about" align="center">
+  Datasets are categorized as one of three possible categories based on gene information: <strong>Interaction</strong>,
+  <strong>Association</strong> or <strong>Ontology</strong>
+</div>
+<br>
+<div class="container" id="about">
+    <p>
+      <strong>Interaction:</strong><br>
+      <p>
+        Interaction refers to any gene-gene set and has the following subcategories:<br>
+        <strong>Kinase-Substate</strong>, <strong>Protein-Protein</strong> and <strong>Transcription Factor-Target</strong>
+      </p>
+    </p>
+    <br>
+    <p>
+      <strong>Association:</strong><br>
+      <p>
+        Association refers to any set of gene-non gene set and has the following subcategories:<br>
+        <strong>Tissue</strong>, <strong>Disease</strong> and a more generic <strong>Sample</strong>
+      </p>
+    </p>
+    <br>
+    <p>
+      <strong>Onotology:</strong><br>
+      <p>
+        Ontology refers to any gene set based on an ontology and has the following subcategories:<br>
+        <strong>Biological Process</strong>, <strong>Cellular Compunent</strong> and <strong>Molecular Function</strong>
+      </p>
+    </p>
+</div>
 {% endblock %}

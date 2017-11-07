@@ -9,6 +9,7 @@ class DataSet(db.Model):
     measurement = db.Column(db.String(120), index=True, unique=False)
     association = db.Column(db.String(250), index=True, unique=False)
     category = db.Column(db.String(120), index=True, unique=False)
+    sub_category = db.Column(db.String(120), index=True, unique=False)
     resource = db.Column(db.String(120), index=True, unique=False)
     numb_genes = db.Column(db.Integer, index=True, unique=False)
     numb_associations = db.Column(db.Integer, index=True, unique=False)
@@ -88,6 +89,23 @@ class Users(db.Model, UserMixin):
 
     def is_correct_password(self, plaintext):
         return bcrypt.check_password_hash(self._password, plaintext)
+
+    def __repr__(self):
+        return '<DataSet %r>' % (self.name)
+
+class Categories(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(120), index=True, unique=False)
+    stat = db.Column(db.Integer, index=True, unique=False)
+
+    def __repr__(self):
+        return '<DataSet %r>' % (self.name)
+
+class SubCategories(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(120), index=True, unique=False)
+    category = db.Column(db.String(120), index=True, unique=False)
+    stat = db.Column(db.Integer, index=True, unique=False)
 
     def __repr__(self):
         return '<DataSet %r>' % (self.name)

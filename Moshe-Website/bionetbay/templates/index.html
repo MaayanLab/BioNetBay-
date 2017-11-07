@@ -31,7 +31,7 @@
     </div>
 
     <div align="center" class="col-3 col-md-3">
-      <a id= "glyph" href="/contribute/">
+      <a id= "glyph" href="/contribute_file">
         <div id="option">
           <span class="glyphicon glyphicon-plus"></span>
           <strong>Contribute to the Repository</strong>
@@ -97,7 +97,7 @@
   <div class="row">
 
     <div align="center" class="col-4 col-md-4">
-      <div id="pieChart2"></div>
+      <a href="/resources"><div id="pieChart2"></div></a>
     </div>
 
     <div align="center" class="col-4 col-md-4">
@@ -105,15 +105,15 @@
       <br>
       <br>
       <br>
-      <div id="pieChart3"></div>
+      <a href="/resources"><div id="pieChart3"></div></a>
     </div>
 
     <div align="center" class="col-4 col-md-4">
-      <div id="pieChart4"></div>
+      <a href="/resources"><div id="pieChart4"></div></a>
     </div>
-
   </div>
-
+</div>
+<hr>
 
     <script src="//cdnjs.cloudflare.com/ajax/libs/d3/4.7.2/d3.min.js"></script>
     <script src="/static/css/d3pie.js"></script>
@@ -122,14 +122,14 @@
     	"header": {
     		"title": {
     			"text": "BioNetBay",
-    			"fontSize": 54,
-    			"font": "courier"
+    			"fontSize": 60,
+    			"font": "Sans-serif"
     		},
     		"subtitle": {
     			"text": "A Repository for Molecular Networks and Gene Sets",
     			"color": "#999999",
-    			"fontSize": 10,
-    			"font": "courier"
+    			"fontSize": 12,
+    			"font": "Sans-serif"
     		},
     		"location": "pie-center",
     		"titleSubtitlePadding": 10
@@ -150,10 +150,10 @@
     		"sortOrder": "label-desc",
 
     		"content": [
-          {% for key, value in count.items() %}
+          {% for element in count %}
     			{
-    				"label": "{{ key }}",
-    				"value": {{ value }},
+    				"label": "{{ element.name }}",
+    				"value": {{ element.stat }},
     			},
           {% endfor %}
     		]
@@ -162,13 +162,13 @@
     	"labels": {
     		"outer": {
     			"format": "label-percentage1",
-    			"pieDistance": 20
+    			"pieDistance": 10
     		},
     		"inner": {
     			"format": "none"
     		},
     		"mainLabel": {
-    			"fontSize": 11
+    			"fontSize": 12
     		},
     		"percentage": {
     			"color": "#999999",
@@ -189,7 +189,7 @@
     	},
     	"effects": {
     		"pullOutSegmentOnClick": {
-    			"effect": "linear",
+    			"effect": "none",
     			"speed": 400,
     			"size": 8
     		}
@@ -198,7 +198,12 @@
     		"colors": {
     			"segmentStroke": "#000000"
     		}
-    	}
+    	},
+      "tooltips": {
+        enabled: true,
+        type: "placeholder",
+        string: "{label}, {value}, {percentage}%"
+      }
     });
     </script>
 
@@ -208,13 +213,13 @@
         "title": {
           "text": "Interactions",
           "fontSize": 16,
-          "font": "courier"
+          "font": "Sans-serif"
         },
         "subtitle": {
           "text": "",
           "color": "#999999",
           "fontSize": 10,
-          "font": "courier"
+          "font": "Sans-serif"
         },
         "location": "pie-center",
         "titleSubtitlePadding": 10
@@ -227,19 +232,19 @@
         "location": "bottom-left"
       },
       "size": {
-        "canvasHeight": 170,
+        "canvasHeight": 200,
         "canvasWidth": 350,
         "pieInnerRadius": "95%",
-        "pieOuterRadius": "100%"
+        "pieOuterRadius": "75%"
       },
       "data": {
         "sortOrder": "label-desc",
 
         "content": [
-          {% for key, value in count.items() %}
+          {% for element in interactions_count %}
           {
-            "label": "{{ key }}",
-            "value": {{ value }},
+            "label": "{{ element.name }}",
+            "value": {{ element.stat}},
           },
           {% endfor %}
         ]
@@ -247,18 +252,18 @@
       },
       "labels": {
         "outer": {
-          "format": "label-percentage1",
-          "pieDistance": 10
+          "format": "label-percentage2",
+          "pieDistance": 6
         },
         "inner": {
           "format": "none"
         },
         "mainLabel": {
-          "fontSize": 7
+          "fontSize": 11
         },
         "percentage": {
           "color": "#999999",
-          "fontSize": 7,
+          "fontSize": 11,
           "decimalPlaces": 0
         },
         "value": {
@@ -275,7 +280,7 @@
       },
       "effects": {
         "pullOutSegmentOnClick": {
-          "effect": "linear",
+          "effect": "none",
           "speed": 400,
           "size": 8
         }
@@ -284,6 +289,11 @@
         "colors": {
           "segmentStroke": "#000000"
         }
+      },
+      tooltips: {
+        enabled: true,
+        type: "placeholder",
+        string: "{label}, {value}, {percentage}%"
       }
     });
     </script>
@@ -294,13 +304,13 @@
         "title": {
           "text": "Associations",
           "fontSize": 16,
-          "font": "courier"
+          "font": "Sans-serif"
         },
         "subtitle": {
           "text": "",
           "color": "#999999",
           "fontSize": 10,
-          "font": "courier"
+          "font": "Sans-serif"
         },
         "location": "pie-center",
         "titleSubtitlePadding": 10
@@ -313,19 +323,19 @@
         "location": "bottom-left"
       },
       "size": {
-        "canvasHeight": 170,
+        "canvasHeight": 200,
         "canvasWidth": 350,
         "pieInnerRadius": "95%",
-        "pieOuterRadius": "100%"
+        "pieOuterRadius": "75%"
       },
       "data": {
         "sortOrder": "label-desc",
 
         "content": [
-          {% for key, value in count.items() %}
+          {% for element in associations_count %}
           {
-            "label": "{{ key }}",
-            "value": {{ value }},
+            "label": "{{ element.name }}",
+            "value": {{ element.stat }},
           },
           {% endfor %}
         ]
@@ -333,18 +343,18 @@
       },
       "labels": {
         "outer": {
-          "format": "label-percentage1",
-          "pieDistance": 10
+          "format": "label-percentage2",
+          "pieDistance": 6
         },
         "inner": {
           "format": "none"
         },
         "mainLabel": {
-          "fontSize": 7
+          "fontSize": 11
         },
         "percentage": {
           "color": "#999999",
-          "fontSize": 7,
+          "fontSize": 11,
           "decimalPlaces": 0
         },
         "value": {
@@ -361,7 +371,7 @@
       },
       "effects": {
         "pullOutSegmentOnClick": {
-          "effect": "linear",
+          "effect": "none",
           "speed": 400,
           "size": 8
         }
@@ -370,6 +380,11 @@
         "colors": {
           "segmentStroke": "#000000"
         }
+      },
+      "tooltips": {
+        enabled: true,
+        type: "placeholder",
+        string: "{label}, {value}, {percentage}%"
       }
     });
     </script>
@@ -380,13 +395,13 @@
         "title": {
           "text": "Ontologies",
           "fontSize": 16,
-          "font": "courier"
+          "font": "Sans-serif"
         },
         "subtitle": {
           "text": "",
           "color": "#999999",
           "fontSize": 10,
-          "font": "courier"
+          "font": "Sans-serif"
         },
         "location": "pie-center",
         "titleSubtitlePadding": 10
@@ -399,19 +414,19 @@
         "location": "bottom-left"
       },
       "size": {
-        "canvasHeight": 170,
+        "canvasHeight": 200,
         "canvasWidth": 350,
         "pieInnerRadius": "95%",
-        "pieOuterRadius": "100%"
+        "pieOuterRadius": "75%"
       },
       "data": {
         "sortOrder": "label-desc",
 
         "content": [
-          {% for key, value in count.items() %}
+          {% for element in ontologies_count %}
           {
-            "label": "{{ key }}",
-            "value": {{ value }},
+            "label": "{{ element.name }}",
+            "value": {{ element.stat}},
           },
           {% endfor %}
         ]
@@ -419,18 +434,18 @@
       },
       "labels": {
         "outer": {
-          "format": "label-percentage1",
-          "pieDistance": 10
+          "format": "label-percentage2",
+          "pieDistance": 6
         },
         "inner": {
           "format": "none"
         },
         "mainLabel": {
-          "fontSize": 7
+          "fontSize": 11
         },
         "percentage": {
           "color": "#999999",
-          "fontSize": 7,
+          "fontSize": 11,
           "decimalPlaces": 0
         },
         "value": {
@@ -447,7 +462,7 @@
       },
       "effects": {
         "pullOutSegmentOnClick": {
-          "effect": "linear",
+          "effect": "none",
           "speed": 400,
           "size": 8
         }
@@ -456,6 +471,11 @@
         "colors": {
           "segmentStroke": "#000000"
         }
+      },
+      tooltips: {
+        enabled: true,
+        type: "placeholder",
+        string: "{label}, {value}, {percentage}%"
       }
     });
     </script>
