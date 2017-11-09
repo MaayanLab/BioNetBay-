@@ -22,7 +22,7 @@
       <br>
       <br>
       <br>
-      <a id= "glyph" href="/about/">
+      <a id= "glyph" href="{{url_for('about')}}">
         <div id="option">
           <span class="glyphicon glyphicon-info-sign"></span>
           <h4>About</h4>
@@ -31,7 +31,7 @@
     </div>
 
     <div align="center" class="col-3 col-md-3">
-      <a id= "glyph" href="/contribute_file">
+      <a id= "glyph" href="{{url_for('contributeFile')}}">
         <div id="option">
           <span class="glyphicon glyphicon-plus"></span>
           <strong>Contribute to the Repository</strong>
@@ -40,7 +40,7 @@
     </div>
 
     <div align="center" class="col-3 col-md-3">
-      <a id= "glyph" href="/resources/">
+      <a id= "glyph" href="{{url_for('resources')}}">
         <div id="option">
           <span class="glyphicon glyphicon-signal"></span>
           <strong>Resources: {{ resources }}</strong><br>
@@ -55,7 +55,7 @@
       <br>
       <br>
       <br>
-      <a id= "glyph" href="/logout">
+      <a id= "glyph" href="{{url_for('logout')}}">
         <div id="option">
           <span class="glyphicon glyphicon-log-out"></span>
           <h4>Logout</h4>
@@ -67,7 +67,7 @@
       <br>
       <br>
       <br>
-      <a id= "glyph" href="/login">
+      <a id= "glyph" href="{{url_for('login')}}">
         <div id="option">
           <span class="glyphicon glyphicon-log-in"></span>
           <h4>Login</h4>
@@ -97,7 +97,7 @@
   <div class="row">
 
     <div align="center" class="col-4 col-md-4">
-      <a href="/resources"><div id="pieChart2"></div></a>
+      <a href="{{url_for('resources')}}"><div id="pieChart2"></div></a>
     </div>
 
     <div align="center" class="col-4 col-md-4">
@@ -105,18 +105,18 @@
       <br>
       <br>
       <br>
-      <a href="/resources"><div id="pieChart3"></div></a>
+      <a href="{{url_for('resources')}}"><div id="pieChart3"></div></a>
     </div>
 
     <div align="center" class="col-4 col-md-4">
-      <a href="/resources"><div id="pieChart4"></div></a>
+      <a href="{{url_for('resources')}}"><div id="pieChart4"></div></a>
     </div>
   </div>
 </div>
 <hr>
 
     <script src="//cdnjs.cloudflare.com/ajax/libs/d3/4.7.2/d3.min.js"></script>
-    <script src="/static/css/d3pie.js"></script>
+    <script src="{{ url_for('static', filename='css/d3pie.js') }}"></script>
     <script>
     var pie = new d3pie("pieChart", {
     	"header": {

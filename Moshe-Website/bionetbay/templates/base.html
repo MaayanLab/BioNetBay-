@@ -24,9 +24,9 @@
     <script>$(document).ready(function() {$('#example').DataTable();} );</script>
     <script>$(document).ready(function() {$('#example2').DataTable();} );</script>
     <script>$(window).load(function() {yes();});function yes() {$('#loading').hide();$('#cover').show();};</script>
-    <link rel="stylesheet" href="/static/css/jquery.auto-complete.css">
-    <script src="/static/css/jquery.auto-complete.min.js"></script>
-    <link href="/static/css/style.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/jquery.auto-complete.css') }}">
+    <script src="{{ url_for('static', filename='css/jquery.auto-complete.min.js') }}"></script>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}">
   </head>
 
   <!-- <div id="loading"><div id="loader" class="loader"></div></div>
@@ -38,17 +38,17 @@
         <title> Welcome to BioNetBay</title>
         {% endif %}
         <div class="topnav" id="myTopnav">
-          <a href="/home">Home</a>
-          <a href="/resources">Resources</a>
+          <a href="{{url_for('index')}}">Home</a>
+          <a href="{{url_for('resources')}}">Resources</a>
           <!-- <a href="/genes">Genes</a> -->
-          <a href="/contribute_file">Contribute</a>
-          <a href="/about">About</a>
+          <a href="{{url_for('contributeFile')}}">Contribute</a>
+          <a href="{{url_for('about')}}">About</a>
           {% if current_user.is_authenticated %}
-          <a href="/logout" style="float: right;">Logout</a>
+          <a href="{{url_for('logout')}}" style="float: right;">Logout</a>
           <span style="float:right;">|</span>
           <span style="float:right;">Welcome {{ current_user.username }}</span>
           {% else %}
-          <a href="/login" style="float: right;">Login</a>
+          <a href="{{url_for('login')}}" style="float: right;">Login</a>
           {% endif %}
         </div>
         <hr>
